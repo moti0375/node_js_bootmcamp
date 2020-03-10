@@ -7,6 +7,7 @@ const usersRouter = require('./routes/userRoutes');
 //Middlewares
 app.use(morgan('dev'));
 app.use(express.json()); //Middleware modify incoming data to json format
+app.use(express.static(`${__dirname}/public`));
 app.use((req, res, next) => {
   console.log('A request has been received, middleware 😇');
   next();
