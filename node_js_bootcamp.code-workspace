@@ -1,0 +1,9 @@
+{
+  "folders": [
+    {
+      "name": "SSH FS - mockserver",
+      "uri": "ssh://mockserver/"
+    }
+  ],
+  "settings": {}
+}
