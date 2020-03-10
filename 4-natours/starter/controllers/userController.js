@@ -17,19 +17,27 @@ exports.getAllUsers = (req, res) => {
   });
 };
 
+exports.checkId = (req, res, next, val) => {
+  const user = users.find(el => el._id === val);
+  // console.log(tour);
+
+  if (user === undefined) {
+    console.log(`User ${val} invalid, userMiddleware`);
+
+    return res.status(404).json({
+      status: 'Failed',
+      message: 'Invalid ID'
+    });
+  }
+  next();
+};
+
 exports.getUser = (req, res) => {
   const id = req.params.id;
   console.log(`${id}`);
 
   const user = users.find(el => el._id === id);
   // console.log(tour);
-
-  if (user === undefined) {
-    return res.status(404).json({
-      status: 'Failed',
-      message: 'Invalid ID'
-    });
-  }
 
   res.status(200).json({
     status: 'success',
@@ -62,16 +70,8 @@ exports.createUser = (req, res) => {
 exports.updateUser = (req, res) => {
   //TODO: handle update a tour ...
 
-  console.log('Update tour: ' + req.params.id);
-  const id = req.params.id * 1;
-  const user = users.find(el => el.id === id);
-
-  if (tour === undefined) {
-    return res.status(401).json({
-      status: 'Failed',
-      message: 'Tour not found'
-    });
-  }
+  console.log('Update user: ' + req.params.id);
+  const user = users.find(el => el.id === req.params.id);
 
   res.status(200).json({
     status: 'success',
@@ -85,15 +85,7 @@ exports.deleteUser = (req, res) => {
   //TODO: handle update a tour ...
 
   console.log('Delete user: ' + req.params.id);
-  const id = req.params.id * 1;
-  const user = users.find(el => el.id === id);
-
-  if (tour === undefined) {
-    return res.status(401).json({
-      status: 'Failed',
-      message: 'Tour not found'
-    });
-  }
+  const user = users.find(el => el.id === req.params.id);
 
   res.status(204).json({
     status: 'success',
