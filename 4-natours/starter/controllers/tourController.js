@@ -22,9 +22,9 @@ exports.checkId = (req, res, next, val) => {
 //Check if the body contains the name and the price properties
 exports.checkBody = (req, res, next) => {
   console.log('Hello from check body middleware');
-  const body = req.body;
-  const name = body.name;
-  const price = body.price;
+  const { body } = req;
+  const { name } = body;
+  const { price } = body;
 
   if (name === undefined || price === undefined) {
     console.log('Hello from check body middleware, something is wrong 👎🏻');

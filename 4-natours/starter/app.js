@@ -1,18 +1,23 @@
 const express = require('express');
+
 const app = express();
 const morgan = require('morgan');
 const toursRouter = require('./routes/tourRoutes');
 const usersRouter = require('./routes/userRoutes');
 
 //Middlewares
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev')); //Logging middleware
+}
 app.use(express.json()); //Middleware modify incoming data to json format
-app.use(express.static(`${__dirname}/public`));
+app.use(express.static(`${__dirname}/public`)); //static files middleware
 app.use((req, res, next) => {
+  //A custom middleware
   console.log('A request has been received, middleware 😇');
   next();
 });
 app.use((req, res, next) => {
+  //Add timestamp middleware
   req.requestTime = new Date().toISOString();
   next();
 });
@@ -33,7 +38,7 @@ app.use((req, res, next) => {
 // app.patch('/api/v1/tours/:id', updateTour);
 // app.delete('/api/v1/tours/:id', deleteTour);
 
-app.use('/api/v1/users', usersRouter);
-app.use('/api/v1/tours', toursRouter);
+app.use('/api/v1/users', usersRouter); //UsersRouter middleware
+app.use('/api/v1/tours', toursRouter); //ToursRouter middleware
 
 module.exports = app;
