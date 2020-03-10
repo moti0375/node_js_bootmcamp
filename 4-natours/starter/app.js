@@ -4,8 +4,6 @@ const morgan = require('morgan');
 const toursRouter = require('./routes/tourRoutes');
 const usersRouter = require('./routes/userRoutes');
 
-const port = 3000;
-
 //Middlewares
 app.use(morgan('dev'));
 app.use(express.json()); //Middleware modify incoming data to json format
@@ -37,7 +35,4 @@ app.use((req, res, next) => {
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/tours', toursRouter);
 
-//Server
-app.listen(port, () => {
-  console.log('App running on port ' + port);
-});
+module.exports = app;
