@@ -16,6 +16,7 @@ app.use((req, res, next) => {
   console.log('A request has been received, middleware 😇');
   next();
 });
+
 app.use((req, res, next) => {
   //Add timestamp middleware
   req.requestTime = new Date().toISOString();
