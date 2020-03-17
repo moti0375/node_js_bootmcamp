@@ -1,98 +1,136 @@
 const fs = require('fs');
+const Tour = require('../models/tourModel.js');
 
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`));
+// const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)); //Now we will get the data from mongoose
 
-exports.checkId = (req, res, next, val) => {
-  console.log(`Tour id: ${val}`);
-  const id = val * 1;
-  const tour = tours.find(t => t.id === id);
-  //   console.log(tour);
+//Used when we worked localy
+// exports.checkId = (req, res, next, val) => {
+//   console.log(`Tour id: ${val}`);
+//   const id = val * 1;
+//   const tour = tours.find(t => t.id === id);
+//   //   console.log(tour);
 
-  if (tour === undefined) {
-    console.log(`Tour CheckId middleware ${id} undefined`);
-    return res.status(404).json({
-      status: 'Failed',
-      message: 'Invalid ID'
-    });
-  }
-  next();
-};
+//   if (tour === undefined) {
+//     console.log(`Tour CheckId middleware ${id} undefined`);
+//     return res.status(404).json({
+//       status: 'Failed',
+//       message: 'Invalid ID'
+//     });
+//   }
+//   next();
+// };
 
 //Check if the body contains the name and the price properties
-exports.checkBody = (req, res, next) => {
-  console.log('Hello from check body middleware');
-  const { body } = req;
-  const { name } = body;
-  const { price } = body;
+//Not required anymore as the mongoose schema has required notations
+// exports.checkBody = (req, res, next) => {
+//   console.log('Hello from check body middleware');
+//   const { body } = req;
+//   const { name } = body;
+//   const { price } = body;
 
-  if (name === undefined || price === undefined) {
-    console.log('Hello from check body middleware, something is wrong 👎🏻');
+//   if (name === undefined || price === undefined) {
+//     console.log('Hello from check body middleware, something is wrong 👎🏻');
 
-    return res.status(404).json({
-      status: 'Failed',
-      error: 'Invalid body fields!'
+//     return res.status(404).json({
+//       status: 'Failed',
+//       error: 'Invalid body fields!'
+//     });
+//   }
+//   console.log("Hello from check body middleware, you're all set 👍🏻");
+
+//   next();
+// };
+
+exports.getAllTours = async (req, res) => {
+  try {
+    const tours = await Tour.find();
+
+    res.status(200).json({
+      status: 'success',
+      requestedAt: req.requestTime,
+      results: tours.length,
+      data: {
+        tours
+      }
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message
     });
   }
-  console.log("Hello from check body middleware, you're all set 👍🏻");
-
-  next();
 };
 
-exports.getAllTours = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    requestedAt: req.requestTime,
-    results: tours.length,
-    data: {
-      tours
-    }
-  });
+exports.getTour = async (req, res) => {
+  try {
+    const tour = await Tour.findById(req.params.id);
+    // const ture = await Tour.findOne({ _id: req.params.id });  same as findById
+
+    res.status(200).json({
+      status: 'success',
+      requestedAt: req.requestTime,
+      results: 1,
+      data: {
+        tour
+      }
+    });
+  } catch (err) {
+    res.status(404).json({ status: 'fail', message: err.message });
+  }
 };
 
-exports.getTour = (req, res) => {
-  const id = req.params.id * 1;
-  const tour = tours.find(t => t.id === id);
+exports.createTour = async (req, res) => {
+  // const newTour = Tour({ name: req.body.name, price: req.body.price, rating: req.body.rating });
 
-  res.status(200).json({
-    status: 'success',
-    requestedAt: req.requestTime,
-    results: 1,
-    data: {
-      tour
-    }
-  });
-};
+  try {
+    const newTourDoc = await Tour.create(req.body);
 
-exports.createTour = (req, res) => {
-  const newId = tours[tours.length - 1].id + 1;
-  const newTour = Object.assign({ id: newId }, req.body);
-  tours.push(newTour);
-  fs.writeFile(`${__dirname}/../dev-data/data/tours-simple.json`, JSON.stringify(tours), () => {
     res.status(201).json({
       status: 'success',
       data: {
-        tour: newTour
+        tour: newTourDoc
       }
     });
-  });
+  } catch (err) {
+    res.status(400).json({
+      status: 'error',
+      message: err.message
+    });
+  }
 };
 
-exports.updateTour = (req, res) => {
+exports.updateTour = async (req, res) => {
   //TODO: handle update a tour ...
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour: 'Updated tour...'
-    }
-  });
+  try {
+    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true //The validators will run again when updating a document
+    });
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour
+      }
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'error',
+      message: err.message
+    });
+  }
 };
 
-exports.deleteTour = (req, res) => {
-  //TODO: handle update a tour ...
+exports.deleteTour = async (req, res) => {
+  try {
+    // const deletById = await Tour.deleteOne({ _id: req.params.id });
+    await Tour.findByIdAndDelete(req.params.id); //same as deleteOne
 
-  res.status(204).json({
-    status: 'success',
-    data: null
-  });
+    res.status(200).json({
+      status: 'success',
+      data: null
+    });
+  } catch (err) {
+    res.status(404).json({ status: 'fail', message: err.message });
+  }
 };

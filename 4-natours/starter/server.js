@@ -23,21 +23,3 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port}`);
 });
-
-const tourSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'A Tour must have a name'],
-    unique: true
-  },
-  price: {
-    type: Number,
-    required: [true, 'A Tour must have a price']
-  },
-  rating: {
-    type: Number,
-    required: [true, 'A Tour must have a rating']
-  }
-});
-
-const Tour = mongoose.model('Tour', tourSchema);
