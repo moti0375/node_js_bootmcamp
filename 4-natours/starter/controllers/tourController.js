@@ -49,12 +49,16 @@ exports.getAllTours = async (req, res) => {
     console.log(queryObj);
     excludeFields.forEach(field => delete queryObj[field]);
     console.log(queryObj);
-    const tours = await Tour.find(queryObj);
-    // const tours = await Tour.find()
-    //   .where('duration')
-    //   .equals(5)
-    //   .where('difficulty')
-    //   .equals('easy');
+
+    // const toues = await Tour.find(queryObj); //This will run the mongoose query without keeping the query obj for later
+    const toursQuery = Tour.find(queryObj); //Saving the mongoose query into a const to use it later on
+
+    const tours = await toursQuery
+      .find()
+      .where('duration')
+      .equals(5)
+      .where('difficulty')
+      .equals('easy');
 
     res.status(200).json({
       status: 'success',
