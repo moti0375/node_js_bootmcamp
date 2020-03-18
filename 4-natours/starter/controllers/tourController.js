@@ -43,22 +43,27 @@ const Tour = require('../models/tourModel.js');
 
 exports.getAllTours = async (req, res) => {
   try {
+    //1) Filtering
     const queryObj = { ...req.query };
     const excludeFields = ['page', 'sort', 'limit', 'fields'];
-
-    console.log(queryObj);
     excludeFields.forEach(field => delete queryObj[field]);
     console.log(queryObj);
 
-    // const toues = await Tour.find(queryObj); //This will run the mongoose query without keeping the query obj for later
-    const toursQuery = Tour.find(queryObj); //Saving the mongoose query into a const to use it later on
+    //2) Advanced filtering
+    let queryString = JSON.stringify(queryObj);
+    queryString = queryString.replace(/\bgte|gt|lte|lt\b/g, match => {
+      console.log(`matched ${match}`);
+      return `$${match}`;
+    });
 
-    const tours = await toursQuery
-      .find()
-      .where('duration')
-      .equals(5)
-      .where('difficulty')
-      .equals('easy');
+    console.log(`Filtered queryString: ${queryString}`);
+    const filteredQuery = JSON.parse(queryString);
+    console.log(filteredQuery);
+    // {difficulty: 'easy', duration: {$gte : 5}}
+    // const toues = await Tour.find(queryObj); //This will run the mongoose query without keeping the query obj for later
+    const toursQuery = Tour.find(filteredQuery); //Saving the mongoose query into a const to use it later on
+
+    const tours = await toursQuery;
 
     res.status(200).json({
       status: 'success',
