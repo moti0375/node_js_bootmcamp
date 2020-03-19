@@ -43,7 +43,7 @@ const Tour = require('../models/tourModel.js');
 
 exports.getAllTours = async (req, res) => {
   try {
-    //1) Filtering
+    //1) Filtering (projection)
     const queryObj = { ...req.query };
     const excludeFields = ['page', 'sort', 'limit', 'fields'];
     excludeFields.forEach(field => delete queryObj[field]);
@@ -74,6 +74,15 @@ exports.getAllTours = async (req, res) => {
       toursQuery = toursQuery.sort(sortStr);
     } else {
       toursQuery = toursQuery.sort('createdAt');
+    }
+
+    //3) Field Limiting (selection)
+    if (req.query.fields) {
+      const fields = req.query.fields.split('.').join(' ');
+      console.log(fields);
+      toursQuery = toursQuery.select(fields);
+    } else {
+      toursQuery = toursQuery.select('-__v'); //If no fields specified, remove this field which is created by mongoose (minus means remove this field)
     }
 
     const tours = await toursQuery;
