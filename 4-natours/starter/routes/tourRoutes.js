@@ -8,6 +8,8 @@ const router = express.Router();
 //Return 400 if not found
 
 router.route('/top_five_cheep').get(controller.aliasTopTours, controller.getAllTours);
+router.route('/stats').get(controller.getToursStats);
+
 router
   .route('/')
   .get(controller.getAllTours)
