@@ -101,8 +101,10 @@ exports.getAllTours = async (req, res) => {
       }
     }
 
+    //Execute the query
     const tours = await toursQuery;
 
+    //Sending the response
     res.status(200).json({
       status: 'success',
       requestedAt: req.requestTime,
@@ -112,6 +114,7 @@ exports.getAllTours = async (req, res) => {
       }
     });
   } catch (err) {
+    //Handling error
     res.status(404).json({
       status: 'fail',
       message: err.message
