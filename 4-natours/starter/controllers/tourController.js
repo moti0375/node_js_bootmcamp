@@ -85,6 +85,22 @@ exports.getAllTours = async (req, res) => {
       toursQuery = toursQuery.select('-__v'); //If no fields specified, remove this field which is created by mongoose (minus means remove this field)
     }
 
+    //4) Pagination
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+    console.log(`Page ${req.query.page}, Limit: ${req.query.limit}`);
+
+    toursQuery = toursQuery.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const count = await Tour.countDocuments();
+      console.log(`Document count: ${count}, Skip: ${skip}`);
+      if (skip >= count) {
+        throw new Error('Page not exists');
+      }
+    }
+
     const tours = await toursQuery;
 
     res.status(200).json({
