@@ -7,6 +7,7 @@ const router = express.Router();
 //Check if the body contains the name and the price properties
 //Return 400 if not found
 
+router.route('/top_five_cheep').get(controller.aliasTopTours, controller.getAllTours);
 router
   .route('/')
   .get(controller.getAllTours)

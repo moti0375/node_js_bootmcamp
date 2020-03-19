@@ -41,6 +41,17 @@ const Tour = require('../models/tourModel.js');
 //   next();
 // };
 
+exports.aliasTopTours = (req, res, next) => {
+  console.log(`aliasTopTours middleware:`);
+  req.query = { ratingsAverage: { gt: '4' } };
+  req.query.limit = '5';
+  req.query.fields = 'name.duration.difficulty.price.ratingsAverage';
+  req.query.sort = '-ratingsAverage.-price';
+
+  console.log(req.query.limit);
+  next();
+};
+
 exports.getAllTours = async (req, res) => {
   try {
     //1) Filtering (projection)
@@ -60,7 +71,7 @@ exports.getAllTours = async (req, res) => {
       ' ';
     });
 
-    console.log(`Filtered queryString: ${queryString}`);
+    // console.log(`Filtered queryString: ${queryString}`);
     const filteredQuery = JSON.parse(queryString);
     console.log(filteredQuery);
     // {difficulty: 'easy', duration: {$gte : 5}}
