@@ -13,7 +13,7 @@ app.use(express.json()); //Middleware modify incoming data to json format
 app.use(express.static(`${__dirname}/public`)); //static files middleware
 app.use((req, res, next) => {
   //A custom middleware
-  console.log('A request has been received, middleware 😇');
+  // console.log('A request has been received, middleware 😇');
   next();
 });
 

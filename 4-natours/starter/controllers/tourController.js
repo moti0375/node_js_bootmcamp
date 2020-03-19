@@ -1,5 +1,5 @@
-const fs = require('fs');
 const Tour = require('../models/tourModel.js');
+const ApiFeaturs = require('../utils/apiFeaturs');
 
 // const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)); //Now we will get the data from mongoose
 
@@ -54,66 +54,14 @@ exports.aliasTopTours = (req, res, next) => {
 
 exports.getAllTours = async (req, res) => {
   try {
-    //1) Filtering (projection)
-    const queryObj = { ...req.query };
-    const excludeFields = ['page', 'sort', 'limit', 'fields'];
-    excludeFields.forEach(field => delete queryObj[field]);
-    console.log(req.query);
-
-    //2) Advanced filtering
-    let queryString = JSON.stringify(queryObj);
-    queryString = queryString.replace(/\bgte|gt|lte|lt\b/g, match => {
-      console.log(`matched ${match}`);
-      return `$${match}`;
-    });
-
-    queryString = queryString.replace('.', () => {
-      ' ';
-    });
-
-    // console.log(`Filtered queryString: ${queryString}`);
-    const filteredQuery = JSON.parse(queryString);
-    console.log(filteredQuery);
-    // {difficulty: 'easy', duration: {$gte : 5}}
-    // const toues = await Tour.find(queryObj); //This will run the mongoose query without keeping the query obj for later
-    let toursQuery = Tour.find(filteredQuery); //Saving the mongoose query into a const to use it later on
-
-    //3) Sorting
-    if (req.query.sort) {
-      const sortStr = req.query.sort.split('.').join(' ');
-      console.log(`Sort query: ${sortStr}`);
-      toursQuery = toursQuery.sort(sortStr);
-    } else {
-      toursQuery = toursQuery.sort('createdAt');
-    }
-
-    //3) Field Limiting (selection)
-    if (req.query.fields) {
-      const fields = req.query.fields.split('.').join(' ');
-      console.log(fields);
-      toursQuery = toursQuery.select(fields);
-    } else {
-      toursQuery = toursQuery.select('-__v'); //If no fields specified, remove this field which is created by mongoose (minus means remove this field)
-    }
-
-    //4) Pagination
-    const page = req.query.page * 1 || 1;
-    const limit = req.query.limit * 1 || 100;
-    const skip = (page - 1) * limit;
-    console.log(`Page ${req.query.page}, Limit: ${req.query.limit}`);
-
-    toursQuery = toursQuery.skip(skip).limit(limit);
-
-    if (req.query.page) {
-      const count = await Tour.countDocuments();
-      console.log(`Document count: ${count}, Skip: ${skip}`);
-      if (skip >= count) {
-        throw new Error('Page not exists');
-      }
-    }
-
     //Execute the query
-    const tours = await toursQuery;
+    const features = await new ApiFeaturs(Tour.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+
+    const tours = await features.query;
 
     //Sending the response
     res.status(200).json({
