@@ -47,7 +47,7 @@ exports.getAllTours = async (req, res) => {
     const queryObj = { ...req.query };
     const excludeFields = ['page', 'sort', 'limit', 'fields'];
     excludeFields.forEach(field => delete queryObj[field]);
-    console.log(queryObj);
+    console.log(req.query);
 
     //2) Advanced filtering
     let queryString = JSON.stringify(queryObj);
@@ -56,12 +56,25 @@ exports.getAllTours = async (req, res) => {
       return `$${match}`;
     });
 
+    queryString = queryString.replace('.', () => {
+      ' ';
+    });
+
     console.log(`Filtered queryString: ${queryString}`);
     const filteredQuery = JSON.parse(queryString);
     console.log(filteredQuery);
     // {difficulty: 'easy', duration: {$gte : 5}}
     // const toues = await Tour.find(queryObj); //This will run the mongoose query without keeping the query obj for later
-    const toursQuery = Tour.find(filteredQuery); //Saving the mongoose query into a const to use it later on
+    let toursQuery = Tour.find(filteredQuery); //Saving the mongoose query into a const to use it later on
+
+    //3) Sorting
+    if (req.query.sort) {
+      const sortStr = req.query.sort.split('.').join(' ');
+      console.log(`Sort query: ${sortStr}`);
+      toursQuery = toursQuery.sort(sortStr);
+    } else {
+      toursQuery = toursQuery.sort('createdAt');
+    }
 
     const tours = await toursQuery;
 
