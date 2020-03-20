@@ -188,3 +188,50 @@ exports.getToursStats = async (req, res) => {
     res.status(404).json({ status: 'fail', message: err.message });
   }
 };
+
+exports.getMontlyPlan = async (req, res) => {
+  const year = req.params.year * 1; // * 1 - transfrom to number
+  try {
+    const plan = await Tour.aggregate([
+      {
+        $unwind: '$startDates'
+      },
+      {
+        $match: {
+          startDates: {
+            $gte: new Date(`${year}-01-01`),
+            $lt: new Date(`${year}-12-31`)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: { $month: `$startDates` },
+          numOfTours: { $sum: 1 },
+          tours: { $push: `$name` }
+        }
+      },
+      {
+        $addFields: {
+          month: `$_id`
+        }
+      },
+      {
+        $project: {
+          _id: 0
+        }
+      },
+      {
+        $sort: { numOfTours: -1 }
+      }
+    ]);
+    console.log(`getMontlyPlan: ${JSON.stringify(req.params)}`);
+    res.status(200).json({
+      status: 'success',
+      results: plan.length,
+      plan
+    });
+  } catch (err) {
+    res.status(404).json({ status: 'fail', message: err.message });
+  }
+};
