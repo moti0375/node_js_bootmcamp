@@ -91,8 +91,22 @@ tourSchema.pre(/^find/, function(next) {
   next();
 });
 
+//Query post find middleware, will run before any find query
 tourSchema.post(/^find/, function(docs, next) {
   console.log(`Command tooks: ${Date.now() - this.start} mSec`);
+  next();
+});
+
+//Query pre aggregation middleware, will run before any find query
+tourSchema.pre('aggregate', function(next) {
+  this.pipeline().unshift({
+    //Add an element and the top of an array
+    $match: {
+      secretTour: { $ne: true }
+    }
+  });
+  console.log(this);
+  console.log(`Aggregation middleware: called`);
   next();
 });
 
