@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const validator = require('validator');
 
 const tourSchema = new mongoose.Schema(
   {
@@ -10,6 +11,7 @@ const tourSchema = new mongoose.Schema(
       trim: true,
       maxlength: [40, 'A Tour must have at most 40 characters'],
       minlength: [10, 'A Tour must have at least 10 characters']
+      // validate: [validator.isAlpha, 'A name must contain characters only']
     },
     slug: String,
     duration: {
@@ -20,11 +22,21 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'A Tour must have a price']
     },
+    priceDiscount: {
+      type: Number,
+      validate: {
+        message: `A discount ({VALUE}) must be less than tour price ${this.price}`,
+        validator: function(val) {
+          //Will not work on update, as this. update dosen't have access to price field. Will work only on new Doc
+          return val < this.price;
+        }
+      }
+    },
     ratingsAverage: {
       type: Number,
       default: 4.5,
       min: [1, 'Rating average must be greater than 1.0'],
-      max: [1, 'Rating average must be less than or equal than 5.0']
+      max: [5, 'Rating average must be less than or equal than 5.0']
     },
     ratingsQuantity: {
       type: Number,
