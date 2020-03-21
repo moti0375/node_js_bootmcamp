@@ -56,7 +56,11 @@ const tourSchema = new mongoose.Schema(
       default: Date.now(),
       select: false //Will be not selected by default
     },
-    startDates: [Date]
+    startDates: [Date],
+    secretTour: {
+      type: Boolean,
+      default: false
+    }
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -64,21 +68,31 @@ tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
 });
 
-//Document middleware, runs before save and create
+//Document pre save middleware, runs before save and create
 tourSchema.pre('save', function(next) {
   // console.log(`Save middleware ${JSON.stringify(this)}`);
   this.slug = slugify(this.name, { lower: true });
   next();
 });
 
-tourSchema.pre('save', function(next) {
-  console.log(`Another pre.save middleware`);
+//Document post save middleware, runs after save and create actions
+tourSchema.post('save', function(doc, next) {
+  console.log(`Post middleware: ${JSON.stringify(doc)}`);
   next();
 });
 
-//Document middleware, runs after save and create actions
-tourSchema.post('save', function(doc, next) {
-  console.log(`Post middleware: ${JSON.stringify(doc)}`);
+//Query pre find middleware, will run before any find query
+tourSchema.pre(/^find/, function(next) {
+  //The regex will match all queries starting with find
+  //processing a query
+  console.log(`Query middleware was called`);
+  this.find({ secretTour: { $ne: true } });
+  this.start = Date.now();
+  next();
+});
+
+tourSchema.post(/^find/, function(docs, next) {
+  console.log(`Command tooks: ${Date.now() - this.start} mSec`);
   next();
 });
 
