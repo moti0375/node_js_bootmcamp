@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const toursRouter = require('./routes/tourRoutes');
 const usersRouter = require('./routes/userRoutes');
 
-//Middlewares
+// 1) Middlewares
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev')); //Logging middleware
 }
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
   next();
 });
 
-//Routes handlers
+// 3) Routes handlers
 // app.get('/', (req, res) => {
 //   res.status(404).json({ message: 'Hello from the server!', app: 'Natours' });
 // });
@@ -38,8 +38,17 @@ app.use((req, res, next) => {
 // app.get('/api/v1/tours/:id/:x?', getTour);
 // app.patch('/api/v1/tours/:id', updateTour);
 // app.delete('/api/v1/tours/:id', deleteTour);
-
 app.use('/api/v1/users', usersRouter); //UsersRouter middleware
 app.use('/api/v1/tours', toursRouter); //ToursRouter middleware
+
+//This is the last route which means there was an error to analyze the req url, a generic error handler
+app.all('*', (req, res) => {
+  //This will catch all methods (GET, POST, etc'), * is for all routes
+  res.status(404).json({
+    status: 'Fail',
+    message: `Can't find ${req.url} on this server!`,
+    app: 'Natours'
+  });
+});
 
 module.exports = app;

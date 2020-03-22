@@ -105,7 +105,7 @@ tourSchema.post('save', function(doc, next) {
 tourSchema.pre(/^find/, function(next) {
   //The regex will match all queries starting with find
   //processing a query
-  console.log(`Query middleware was called`);
+  // console.log(`Query middleware was called`);
   this.find({ secretTour: { $ne: true } });
   this.start = Date.now();
   next();
