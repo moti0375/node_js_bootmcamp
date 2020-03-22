@@ -4,6 +4,8 @@ const app = express();
 const morgan = require('morgan');
 const toursRouter = require('./routes/tourRoutes');
 const usersRouter = require('./routes/userRoutes');
+const AppError = require('./utils/appError');
+const errorHandler = require('./controllers/errorController');
 
 // 1) Middlewares
 if (process.env.NODE_ENV === 'development') {
@@ -43,23 +45,13 @@ app.use('/api/v1/tours', toursRouter); //ToursRouter middleware
 
 //This is the last route which means there was an error to analyze the req url, a generic error handler
 app.all('*', (req, res, next) => {
-  //This will catch all methods (GET, POST, etc'), * is for all routes
-  // res.status(404).json({
-  //   status: 'Fail',
-  //   message: `Can't find ${req.url} on this server!`
-  // });
-  const error = new Error(`Can't find ${req.url} on this server!`);
-  error.statusCode = 404;
-  error.status = 'fail';
+  // const error = new Error(`Can't find ${req.url} on this server!`);
+  // error.statusCode = 404;
+  // error.status = 'fail';
+
+  const error = new AppError(`Can't find ${req.url} on this server!`, 404);
   next(error);
 });
 
-app.use((err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message
-  });
-});
+app.use(errorHandler);
 module.exports = app;
