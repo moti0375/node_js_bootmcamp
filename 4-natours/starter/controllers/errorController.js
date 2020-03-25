@@ -11,6 +11,11 @@ const handleValidationErrorDB = error => {
   return new AppError(error.message, 400);
 };
 
+const handleDuplicateErrorDB = error => {
+  console.log('handleDuplicateErrorDB was called');
+  return new AppError(`Cannot have duplicate of ${error.keyValue.name} `, 400);
+};
+
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -48,6 +53,8 @@ module.exports = (err, req, res, next) => {
       error = handleCastErrorDB(error);
     } else if (error.name === 'ValidationError') {
       error = handleValidationErrorDB(error);
+    } else if (error.code === 11000) {
+      error = handleDuplicateErrorDB(error);
     }
 
     sendErrorProd(error, res);
