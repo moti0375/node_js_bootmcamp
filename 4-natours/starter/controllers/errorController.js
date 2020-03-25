@@ -7,8 +7,14 @@ const handleCastErrorDB = error => {
 };
 
 const handleValidationErrorDB = error => {
-  console.log('handleValidationErrorDB was called');
-  return new AppError(error.message, 400);
+  // console.log(`handleValidationErrorDB was called: ${error.errors.length} errors ${JSON.stringify(error.errors)}`);
+  const errors = Object.values(error.errors)
+    .map(e => e.message)
+    .join('. ');
+
+  const errorMessage = `Invlid input: ${errors}`;
+  console.log(errorMessage);
+  return new AppError(errorMessage, 400);
 };
 
 const handleDuplicateErrorDB = error => {
