@@ -2,3 +2,4 @@
 /4-natours/after-section*
 /4-natours/package-lock.json
 package-lock.json
+node_modules/*
