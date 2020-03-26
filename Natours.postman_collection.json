@@ -1,0 +1,1108 @@
+{
+	"info": {
+		"_postman_id": "f935d889-35ad-46a6-bfd3-4dc33b8d9000",
+		"name": "Natours",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Tours",
+			"item": [
+				{
+					"name": "Get All Tours",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Prefer",
+								"value": "<string>",
+								"description": "Preference"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Transmit-Token",
+								"value": "972560000000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n                \"startLocation\": {\n                    \"description\": \"Miami, USA\",\n                    \"type\": \"Point\",\n                    \"coordinates\": [\n                        -80.185942,\n                        25.774772\n                    ],\n                    \"address\": \"301 Biscayne Blvd, Miami, FL 33132, USA\"\n                },\n                \"ratingsAverage\": 4.8,\n                \"ratingsQuantity\": 6,\n                \"images\": [\n                    \"tour-2-1.jpg\",\n                    \"tour-2-2.jpg\",\n                    \"tour-2-3.jpg\"\n                ],\n                \"startDates\": [\n                    \"2021-06-19T09:00:00.000Z\",\n                    \"2021-07-20T09:00:00.000Z\",\n                    \"2021-08-18T09:00:00.000Z\"\n                ],\n                \"_id\": \"5c88fa8cf4afda39709c2955\",\n                \"name\": \"The Sea Explorer\",\n                \"duration\": 7,\n                \"maxGroupSize\": 15,\n                \"difficulty\": \"medium\",\n                \"guides\": [\n                    \"5c8a22c62f8fb814b56fa18b\",\n                    \"5c8a1f4e2f8fb814b56fa185\"\n                ],\n                \"price\": 497,\n                \"summary\": \"Exploring the jaw-dropping US east coast by foot and by boat\",\n                \"description\": \"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\",\n                \"imageCover\": \"tour-2-cover.jpg\",\n                \"locations\": [\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2959\",\n                        \"description\": \"Lummus Park Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.128473,\n                            25.781842\n                        ],\n                        \"day\": 1\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2958\",\n                        \"description\": \"Islamorada\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.647885,\n                            24.909047\n                        ],\n                        \"day\": 2\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2957\",\n                        \"description\": \"Sombrero Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.0784,\n                            24.707496\n                        ],\n                        \"day\": 3\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2956\",\n                        \"description\": \"West Key\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.768719,\n                            24.552242\n                        ],\n                        \"day\": 5\n                    }\n                ]\n            }"
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours"
+							]
+						},
+						"description": "Getting all tours from server"
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Prefer",
+										"value": "<string>",
+										"description": "Preference"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/entities?select=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"entities"
+									],
+									"query": [
+										{
+											"key": "select",
+											"value": "<string>"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get All Tours - Filtering",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Prefer",
+								"value": "<string>",
+								"description": "Preference"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Transmit-Token",
+								"value": "972560000000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n                \"startLocation\": {\n                    \"description\": \"Miami, USA\",\n                    \"type\": \"Point\",\n                    \"coordinates\": [\n                        -80.185942,\n                        25.774772\n                    ],\n                    \"address\": \"301 Biscayne Blvd, Miami, FL 33132, USA\"\n                },\n                \"ratingsAverage\": 4.8,\n                \"ratingsQuantity\": 6,\n                \"images\": [\n                    \"tour-2-1.jpg\",\n                    \"tour-2-2.jpg\",\n                    \"tour-2-3.jpg\"\n                ],\n                \"startDates\": [\n                    \"2021-06-19T09:00:00.000Z\",\n                    \"2021-07-20T09:00:00.000Z\",\n                    \"2021-08-18T09:00:00.000Z\"\n                ],\n                \"_id\": \"5c88fa8cf4afda39709c2955\",\n                \"name\": \"The Sea Explorer\",\n                \"duration\": 7,\n                \"maxGroupSize\": 15,\n                \"difficulty\": \"medium\",\n                \"guides\": [\n                    \"5c8a22c62f8fb814b56fa18b\",\n                    \"5c8a1f4e2f8fb814b56fa185\"\n                ],\n                \"price\": 497,\n                \"summary\": \"Exploring the jaw-dropping US east coast by foot and by boat\",\n                \"description\": \"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\",\n                \"imageCover\": \"tour-2-cover.jpg\",\n                \"locations\": [\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2959\",\n                        \"description\": \"Lummus Park Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.128473,\n                            25.781842\n                        ],\n                        \"day\": 1\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2958\",\n                        \"description\": \"Islamorada\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.647885,\n                            24.909047\n                        ],\n                        \"day\": 2\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2957\",\n                        \"description\": \"Sombrero Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.0784,\n                            24.707496\n                        ],\n                        \"day\": 3\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2956\",\n                        \"description\": \"West Key\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.768719,\n                            24.552242\n                        ],\n                        \"day\": 5\n                    }\n                ]\n            }"
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours/?difficulty=easy&duration=5",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours",
+								""
+							],
+							"query": [
+								{
+									"key": "difficulty",
+									"value": "easy"
+								},
+								{
+									"key": "duration",
+									"value": "5"
+								},
+								{
+									"key": "price",
+									"value": "350",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Prefer",
+										"value": "<string>",
+										"description": "Preference"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/entities?select=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"entities"
+									],
+									"query": [
+										{
+											"key": "select",
+											"value": "<string>"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get All Tours - Sorting",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Prefer",
+								"value": "<string>",
+								"description": "Preference"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Transmit-Token",
+								"value": "972560000000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n                \"startLocation\": {\n                    \"description\": \"Miami, USA\",\n                    \"type\": \"Point\",\n                    \"coordinates\": [\n                        -80.185942,\n                        25.774772\n                    ],\n                    \"address\": \"301 Biscayne Blvd, Miami, FL 33132, USA\"\n                },\n                \"ratingsAverage\": 4.8,\n                \"ratingsQuantity\": 6,\n                \"images\": [\n                    \"tour-2-1.jpg\",\n                    \"tour-2-2.jpg\",\n                    \"tour-2-3.jpg\"\n                ],\n                \"startDates\": [\n                    \"2021-06-19T09:00:00.000Z\",\n                    \"2021-07-20T09:00:00.000Z\",\n                    \"2021-08-18T09:00:00.000Z\"\n                ],\n                \"_id\": \"5c88fa8cf4afda39709c2955\",\n                \"name\": \"The Sea Explorer\",\n                \"duration\": 7,\n                \"maxGroupSize\": 15,\n                \"difficulty\": \"medium\",\n                \"guides\": [\n                    \"5c8a22c62f8fb814b56fa18b\",\n                    \"5c8a1f4e2f8fb814b56fa185\"\n                ],\n                \"price\": 497,\n                \"summary\": \"Exploring the jaw-dropping US east coast by foot and by boat\",\n                \"description\": \"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\",\n                \"imageCover\": \"tour-2-cover.jpg\",\n                \"locations\": [\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2959\",\n                        \"description\": \"Lummus Park Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.128473,\n                            25.781842\n                        ],\n                        \"day\": 1\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2958\",\n                        \"description\": \"Islamorada\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.647885,\n                            24.909047\n                        ],\n                        \"day\": 2\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2957\",\n                        \"description\": \"Sombrero Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.0784,\n                            24.707496\n                        ],\n                        \"day\": 3\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2956\",\n                        \"description\": \"West Key\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.768719,\n                            24.552242\n                        ],\n                        \"day\": 5\n                    }\n                ]\n            }"
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours?sort=-price.-duration",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours"
+							],
+							"query": [
+								{
+									"key": "price",
+									"value": "350",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "-price.-duration"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Prefer",
+										"value": "<string>",
+										"description": "Preference"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/entities?select=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"entities"
+									],
+									"query": [
+										{
+											"key": "select",
+											"value": "<string>"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get All Tours - Selection",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Prefer",
+								"value": "<string>",
+								"description": "Preference"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Transmit-Token",
+								"value": "972560000000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n                \"startLocation\": {\n                    \"description\": \"Miami, USA\",\n                    \"type\": \"Point\",\n                    \"coordinates\": [\n                        -80.185942,\n                        25.774772\n                    ],\n                    \"address\": \"301 Biscayne Blvd, Miami, FL 33132, USA\"\n                },\n                \"ratingsAverage\": 4.8,\n                \"ratingsQuantity\": 6,\n                \"images\": [\n                    \"tour-2-1.jpg\",\n                    \"tour-2-2.jpg\",\n                    \"tour-2-3.jpg\"\n                ],\n                \"startDates\": [\n                    \"2021-06-19T09:00:00.000Z\",\n                    \"2021-07-20T09:00:00.000Z\",\n                    \"2021-08-18T09:00:00.000Z\"\n                ],\n                \"_id\": \"5c88fa8cf4afda39709c2955\",\n                \"name\": \"The Sea Explorer\",\n                \"duration\": 7,\n                \"maxGroupSize\": 15,\n                \"difficulty\": \"medium\",\n                \"guides\": [\n                    \"5c8a22c62f8fb814b56fa18b\",\n                    \"5c8a1f4e2f8fb814b56fa185\"\n                ],\n                \"price\": 497,\n                \"summary\": \"Exploring the jaw-dropping US east coast by foot and by boat\",\n                \"description\": \"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\",\n                \"imageCover\": \"tour-2-cover.jpg\",\n                \"locations\": [\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2959\",\n                        \"description\": \"Lummus Park Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.128473,\n                            25.781842\n                        ],\n                        \"day\": 1\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2958\",\n                        \"description\": \"Islamorada\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.647885,\n                            24.909047\n                        ],\n                        \"day\": 2\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2957\",\n                        \"description\": \"Sombrero Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.0784,\n                            24.707496\n                        ],\n                        \"day\": 3\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2956\",\n                        \"description\": \"West Key\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.768719,\n                            24.552242\n                        ],\n                        \"day\": 5\n                    }\n                ]\n            }"
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours?fields=name.duration.difficulty.price",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "name.duration.difficulty.price"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Prefer",
+										"value": "<string>",
+										"description": "Preference"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/entities?select=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"entities"
+									],
+									"query": [
+										{
+											"key": "select",
+											"value": "<string>"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get All Tours - Paging",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Prefer",
+								"value": "<string>",
+								"description": "Preference"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Transmit-Token",
+								"value": "972560000000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n                \"startLocation\": {\n                    \"description\": \"Miami, USA\",\n                    \"type\": \"Point\",\n                    \"coordinates\": [\n                        -80.185942,\n                        25.774772\n                    ],\n                    \"address\": \"301 Biscayne Blvd, Miami, FL 33132, USA\"\n                },\n                \"ratingsAverage\": 4.8,\n                \"ratingsQuantity\": 6,\n                \"images\": [\n                    \"tour-2-1.jpg\",\n                    \"tour-2-2.jpg\",\n                    \"tour-2-3.jpg\"\n                ],\n                \"startDates\": [\n                    \"2021-06-19T09:00:00.000Z\",\n                    \"2021-07-20T09:00:00.000Z\",\n                    \"2021-08-18T09:00:00.000Z\"\n                ],\n                \"_id\": \"5c88fa8cf4afda39709c2955\",\n                \"name\": \"The Sea Explorer\",\n                \"duration\": 7,\n                \"maxGroupSize\": 15,\n                \"difficulty\": \"medium\",\n                \"guides\": [\n                    \"5c8a22c62f8fb814b56fa18b\",\n                    \"5c8a1f4e2f8fb814b56fa185\"\n                ],\n                \"price\": 497,\n                \"summary\": \"Exploring the jaw-dropping US east coast by foot and by boat\",\n                \"description\": \"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\",\n                \"imageCover\": \"tour-2-cover.jpg\",\n                \"locations\": [\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2959\",\n                        \"description\": \"Lummus Park Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.128473,\n                            25.781842\n                        ],\n                        \"day\": 1\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2958\",\n                        \"description\": \"Islamorada\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.647885,\n                            24.909047\n                        ],\n                        \"day\": 2\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2957\",\n                        \"description\": \"Sombrero Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.0784,\n                            24.707496\n                        ],\n                        \"day\": 3\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2956\",\n                        \"description\": \"West Key\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.768719,\n                            24.552242\n                        ],\n                        \"day\": 5\n                    }\n                ]\n            }"
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours?page=4&limit=3",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "4"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Prefer",
+										"value": "<string>",
+										"description": "Preference"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/entities?select=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"entities"
+									],
+									"query": [
+										{
+											"key": "select",
+											"value": "<string>"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Post a tour",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Prefer",
+								"value": "<string>",
+								"description": "Preference"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Jerusalem of Gold\",\n    \"duration\": 1,\n    \"maxGroupSize\": 30,\n    \"difficulty\": \"easy\",\n    \"ratingsAverage\": 4.6,\n    \"ratingsQuantity\": 25,\n    \"price\": 500,\n    \"priceDiscount\": 400,\n    \"summary\": \"An adult tour in Tel-Aviv\",\n    \"description\": \"Test tour\",\n    \"imageCover\": \"eilat-bay.jpg\",\n    \"images\": [\"tour-1-1.jpg\", \"tour-1-2.jpg\", \"tour-1-3.jpg\"],\n    \"startDates\": [\"2021-04-25,10:00\", \"2021-07-20,10:00\", \"2021-10-05,10:00\"],\n    \"secretTour\": false\n  }"
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours"
+							]
+						},
+						"description": "Post a tour into the server"
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Prefer",
+										"value": "<string>",
+										"description": "Preference"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/entities?select=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"entities"
+									],
+									"query": [
+										{
+											"key": "select",
+											"value": "<string>"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get a Tour ",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours/1",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Tour",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ratingsAverage\": 6,\n\t\"name\": \"Small\",\n\t\"difficulty\": \"Katan\"\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours/5e714bcc3226771282db1322",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours",
+								"5e714bcc3226771282db1322"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Tour",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"duration\": 15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours/5e6f3d3fb219bd0a7b6082bb",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours",
+								"5e6f3d3fb219bd0a7b6082bb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Tours - Top 5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Prefer",
+								"value": "<string>",
+								"description": "Preference"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Transmit-Token",
+								"value": "972560000000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n                \"startLocation\": {\n                    \"description\": \"Miami, USA\",\n                    \"type\": \"Point\",\n                    \"coordinates\": [\n                        -80.185942,\n                        25.774772\n                    ],\n                    \"address\": \"301 Biscayne Blvd, Miami, FL 33132, USA\"\n                },\n                \"ratingsAverage\": 4.8,\n                \"ratingsQuantity\": 6,\n                \"images\": [\n                    \"tour-2-1.jpg\",\n                    \"tour-2-2.jpg\",\n                    \"tour-2-3.jpg\"\n                ],\n                \"startDates\": [\n                    \"2021-06-19T09:00:00.000Z\",\n                    \"2021-07-20T09:00:00.000Z\",\n                    \"2021-08-18T09:00:00.000Z\"\n                ],\n                \"_id\": \"5c88fa8cf4afda39709c2955\",\n                \"name\": \"The Sea Explorer\",\n                \"duration\": 7,\n                \"maxGroupSize\": 15,\n                \"difficulty\": \"medium\",\n                \"guides\": [\n                    \"5c8a22c62f8fb814b56fa18b\",\n                    \"5c8a1f4e2f8fb814b56fa185\"\n                ],\n                \"price\": 497,\n                \"summary\": \"Exploring the jaw-dropping US east coast by foot and by boat\",\n                \"description\": \"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\",\n                \"imageCover\": \"tour-2-cover.jpg\",\n                \"locations\": [\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2959\",\n                        \"description\": \"Lummus Park Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.128473,\n                            25.781842\n                        ],\n                        \"day\": 1\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2958\",\n                        \"description\": \"Islamorada\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.647885,\n                            24.909047\n                        ],\n                        \"day\": 2\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2957\",\n                        \"description\": \"Sombrero Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.0784,\n                            24.707496\n                        ],\n                        \"day\": 3\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2956\",\n                        \"description\": \"West Key\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.768719,\n                            24.552242\n                        ],\n                        \"day\": 5\n                    }\n                ]\n            }"
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours/top_five_cheep",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours",
+								"top_five_cheep"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Prefer",
+										"value": "<string>",
+										"description": "Preference"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/entities?select=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"entities"
+									],
+									"query": [
+										{
+											"key": "select",
+											"value": "<string>"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Tours Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours/stats",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tours Mothly Plan",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours/monthly-plan/2020",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours",
+								"monthly-plan",
+								"2020"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get All Users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"description": "Preference",
+								"key": "Prefer",
+								"value": "<string>"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n                \"startLocation\": {\n                    \"description\": \"Miami, USA\",\n                    \"type\": \"Point\",\n                    \"coordinates\": [\n                        -80.185942,\n                        25.774772\n                    ],\n                    \"address\": \"301 Biscayne Blvd, Miami, FL 33132, USA\"\n                },\n                \"ratingsAverage\": 4.8,\n                \"ratingsQuantity\": 6,\n                \"images\": [\n                    \"tour-2-1.jpg\",\n                    \"tour-2-2.jpg\",\n                    \"tour-2-3.jpg\"\n                ],\n                \"startDates\": [\n                    \"2021-06-19T09:00:00.000Z\",\n                    \"2021-07-20T09:00:00.000Z\",\n                    \"2021-08-18T09:00:00.000Z\"\n                ],\n                \"_id\": \"5c88fa8cf4afda39709c2955\",\n                \"name\": \"The Sea Explorer\",\n                \"duration\": 7,\n                \"maxGroupSize\": 15,\n                \"difficulty\": \"medium\",\n                \"guides\": [\n                    \"5c8a22c62f8fb814b56fa18b\",\n                    \"5c8a1f4e2f8fb814b56fa185\"\n                ],\n                \"price\": 497,\n                \"summary\": \"Exploring the jaw-dropping US east coast by foot and by boat\",\n                \"description\": \"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\",\n                \"imageCover\": \"tour-2-cover.jpg\",\n                \"locations\": [\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2959\",\n                        \"description\": \"Lummus Park Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.128473,\n                            25.781842\n                        ],\n                        \"day\": 1\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2958\",\n                        \"description\": \"Islamorada\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.647885,\n                            24.909047\n                        ],\n                        \"day\": 2\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2957\",\n                        \"description\": \"Sombrero Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.0784,\n                            24.707496\n                        ],\n                        \"day\": 3\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2956\",\n                        \"description\": \"West Key\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.768719,\n                            24.552242\n                        ],\n                        \"day\": 5\n                    }\n                ]\n            }"
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/users",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "Getting all tours from server"
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Prefer",
+										"value": "<string>",
+										"description": "Preference"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/entities?select=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"entities"
+									],
+									"query": [
+										{
+											"key": "select",
+											"value": "<string>"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get a User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/tours/9/moti",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"tours",
+								"9",
+								"moti"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"description": "Preference",
+								"key": "Prefer",
+								"value": "<string>"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n            \"_id\": \"5c8a1d5b0190b214360dc76\",\n            \"name\": \"Moti Bartov\",\n            \"email\": \"admin@natours.io\",\n            \"role\": \"admin\",\n            \"active\": true,\n            \"photo\": \"user-1.jpg\",\n            \"password\": \"$2a$12$Q0grHjH9PXc6SxivC8m12.2mZJ9BbKcgFpwSG4Y1ZEII8HJVzWeyS\"\n\t\n}"
+						},
+						"url": {
+							"raw": "127.0.0.1:3000/api/v1/users",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "Post a tour into the server"
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Prefer",
+										"value": "<string>",
+										"description": "Preference"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/entities?select=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"entities"
+									],
+									"query": [
+										{
+											"key": "select",
+											"value": "<string>"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Reference",
+			"item": [
+				{
+					"name": "Get All Tours - Reference",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Prefer",
+								"value": "<string>",
+								"description": "Preference"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n                \"startLocation\": {\n                    \"description\": \"Miami, USA\",\n                    \"type\": \"Point\",\n                    \"coordinates\": [\n                        -80.185942,\n                        25.774772\n                    ],\n                    \"address\": \"301 Biscayne Blvd, Miami, FL 33132, USA\"\n                },\n                \"ratingsAverage\": 4.8,\n                \"ratingsQuantity\": 6,\n                \"images\": [\n                    \"tour-2-1.jpg\",\n                    \"tour-2-2.jpg\",\n                    \"tour-2-3.jpg\"\n                ],\n                \"startDates\": [\n                    \"2021-06-19T09:00:00.000Z\",\n                    \"2021-07-20T09:00:00.000Z\",\n                    \"2021-08-18T09:00:00.000Z\"\n                ],\n                \"_id\": \"5c88fa8cf4afda39709c2955\",\n                \"name\": \"The Sea Explorer\",\n                \"duration\": 7,\n                \"maxGroupSize\": 15,\n                \"difficulty\": \"medium\",\n                \"guides\": [\n                    \"5c8a22c62f8fb814b56fa18b\",\n                    \"5c8a1f4e2f8fb814b56fa185\"\n                ],\n                \"price\": 497,\n                \"summary\": \"Exploring the jaw-dropping US east coast by foot and by boat\",\n                \"description\": \"Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\",\n                \"imageCover\": \"tour-2-cover.jpg\",\n                \"locations\": [\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2959\",\n                        \"description\": \"Lummus Park Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.128473,\n                            25.781842\n                        ],\n                        \"day\": 1\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2958\",\n                        \"description\": \"Islamorada\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -80.647885,\n                            24.909047\n                        ],\n                        \"day\": 2\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2957\",\n                        \"description\": \"Sombrero Beach\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.0784,\n                            24.707496\n                        ],\n                        \"day\": 3\n                    },\n                    {\n                        \"_id\": \"5c88fa8cf4afda39709c2956\",\n                        \"description\": \"West Key\",\n                        \"type\": \"Point\",\n                        \"coordinates\": [\n                            -81.768719,\n                            24.552242\n                        ],\n                        \"day\": 5\n                    }\n                ]\n            }"
+						},
+						"url": {
+							"raw": "https://www.natours.dev/api/v1/tours",
+							"protocol": "https",
+							"host": [
+								"www",
+								"natours",
+								"dev"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tours"
+							]
+						},
+						"description": "Get all tours reference query"
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Prefer",
+										"value": "<string>",
+										"description": "Preference"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/entities?select=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"entities"
+									],
+									"query": [
+										{
+											"key": "select",
+											"value": "<string>"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
