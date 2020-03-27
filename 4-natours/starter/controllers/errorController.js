@@ -39,9 +39,9 @@ const sendErrorProd = (err, res) => {
     });
   } else {
     console.error('💥 ERROR:', err);
-    res.status(err.statusCode).json({
+    res.status(500).json({
       status: err.status,
-      message: err.message
+      message: err.message || 'Something went very wrong'
     });
   }
 };
