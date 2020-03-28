@@ -1,10 +1,12 @@
-const fs = require('fs');
-
-const users = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/users.json`));
+const User = require('../models/userModel');
+const catchAsync = require('../utils/catchAsync.js');
 
 //Users
-exports.getAllUsers = (req, res) => {
-  // console.log(req.requestTime);
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+  //Execute the query
+  const users = await User.find();
+
+  //Sending the response
   res.status(200).json({
     status: 'success',
     requestedAt: req.requestTime,
@@ -13,10 +15,10 @@ exports.getAllUsers = (req, res) => {
       users
     }
   });
-};
+});
 
 exports.checkId = (req, res, next, val) => {
-  const user = users.find(el => el._id === val);
+  const user = User.find(el => el._id === val);
   // console.log(tour);
 
   if (user === undefined) {
@@ -34,7 +36,7 @@ exports.getUser = (req, res) => {
   const { id } = req.params;
   console.log(`${id}`);
 
-  const user = users.find(el => el._id === id);
+  const user = User.find(el => el._id === id);
   // console.log(tour);
 
   res.status(200).json({
@@ -44,21 +46,6 @@ exports.getUser = (req, res) => {
     data: {
       user
     }
-  });
-};
-
-exports.createUser = (req, res) => {
-  const newId = users[users.length - 1].id + 1;
-  // eslint-disable-next-line node/no-unsupported-features/es-syntax
-  const newUser = { id: newId, ...req.body };
-  users.push(newUser);
-  fs.writeFile(`${__dirname}/dev-data/data/users.json`, JSON.stringify(users), () => {
-    res.status(201).json({
-      status: 'success',
-      data: {
-        user: newUser
-      }
-    });
   });
 };
 

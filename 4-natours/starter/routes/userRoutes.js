@@ -5,12 +5,9 @@ const authController = require('../controllers/authController');
 const router = express.Router();
 
 router.post('/signup', authController.signUp);
-router.param('id', controller.checkId); //Checking id middlware
+router.post('/login', authController.login);
 
-router
-  .route('/')
-  .get(controller.getAllUsers)
-  .post(controller.createUser);
+router.route('/').get(controller.getAllUsers);
 
 router
   .route('/:id')
