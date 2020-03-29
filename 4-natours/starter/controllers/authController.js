@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const AppError = require('../utils/appError');
 const User = require('../models/userModel');
@@ -18,7 +18,8 @@ exports.signUp = catchAsync(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
-    photo: req.body.photo
+    photo: req.body.photo,
+    passwordChangedAt: req.body.passwordChangedAt
   }); //This is not a good way of creating a user, as it may allow all users to signup as admin, therefore checkout the next line:
 
   const token = createToken(newUser._id);
@@ -45,7 +46,8 @@ exports.login = catchAsync(async (req, res, next) => {
 
   //3) Check if password correct
   if (!user || !(await user.correctPassword(user.password, password))) {
-    const err = new AppError('Incorrect user or password', 400);
+    const err = new AppError('Incorrect username or password', 401);
+    console.log(`incorrect password: ${JSON.stringify(err)}`);
     return next(err);
   }
 
@@ -56,4 +58,51 @@ exports.login = catchAsync(async (req, res, next) => {
     status: 'success',
     token: token
   });
+});
+
+exports.checkAuth = catchAsync(async (req, res, next) => {
+  console.log(`Check auth middleware was called: ${JSON.stringify(req.headers)}`);
+  //1) Get the token and check if it exists
+  let token;
+
+  if (req.headers.autherization && req.headers.autherization.startsWith('Bearer')) {
+    token = req.headers.autherization.split(' ')[1];
+  }
+  // console.log(`Token: ${token}`);
+  if (!token) {
+    return next(new AppError('You are not logged in.', 401));
+  }
+
+  //2) Check token verification valid
+  const decodedToken = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  if (!decodedToken) {
+    return next(new AppError("You're not logged in", 401));
+  }
+  console.log(decodedToken);
+
+  //3) Check if the user still exists
+
+  const { id } = decodedToken;
+  console.log(`Looking for user: ${id}`);
+  const user = await User.findById(id).select('+passwordChangedAt');
+
+  if (!user) {
+    console.log(`User not found... `);
+    return next(new AppError('The user belonging this token no longer exists', 401));
+  }
+
+  // console.log(`Founded user: ${JSON.stringify(user)}`);
+  //4) Check if user changed password after JWT was issued
+  const { passwordChangedAt } = user;
+  console.log(`Password changed date: ${passwordChangedAt}`);
+  const passwordChanged = await user.changedPasswordAfter(decodedToken.iat);
+  console.log(`Password changed: ${passwordChanged}`);
+
+  if (passwordChanged) {
+    return next(new AppError('User changed password after token issued...', 401));
+  }
+
+  //All set, get protected data!
+  req.user = user; //We can now put the user into the request for later usages
+  next();
 });

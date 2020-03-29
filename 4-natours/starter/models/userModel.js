@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema({
         return val === this.password;
       }
     }
+  },
+  passwordChangedAt: {
+    type: Date,
+    select: false
   }
 });
 
@@ -56,5 +60,16 @@ userSchema.methods.correctPassword = async function(hashedPassword, enteredPassw
   return await bcrypt.compare(enteredPassword, hashedPassword);
 };
 
+userSchema.methods.changedPasswordAfter = async function(jwtTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+    console.log(`PasswordChangedAt: ${changedTimestamp} jwtTimestamp: ${jwtTimestamp}`);
+    if (jwtTimestamp < changedTimestamp) {
+      console.log('User changed password after token issued...');
+      return true;
+    }
+  }
+  return false;
+};
 const User = mongoose.model('User', userSchema);
 module.exports = User;

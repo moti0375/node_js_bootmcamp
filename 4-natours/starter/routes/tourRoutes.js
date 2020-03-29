@@ -1,5 +1,6 @@
 const express = require('express');
 const controller = require('../controllers/tourController');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 // router.param('id', controller.checkId); //Used to work with local storage, no need to add this middleware for id checking
@@ -13,7 +14,7 @@ router.route('/monthly-plan/:year').get(controller.getMontlyPlan);
 
 router
   .route('/')
-  .get(controller.getAllTours)
+  .get(authController.checkAuth, controller.getAllTours)
   .post(controller.createTour); //New version with route
 
 router
