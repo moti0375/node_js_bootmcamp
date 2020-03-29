@@ -65,8 +65,8 @@ exports.checkAuth = catchAsync(async (req, res, next) => {
   //1) Get the token and check if it exists
   let token;
 
-  if (req.headers.autherization && req.headers.autherization.startsWith('Bearer')) {
-    token = req.headers.autherization.split(' ')[1];
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
   }
   // console.log(`Token: ${token}`);
   if (!token) {
