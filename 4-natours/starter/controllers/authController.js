@@ -19,7 +19,8 @@ exports.signUp = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     photo: req.body.photo,
-    passwordChangedAt: req.body.passwordChangedAt
+    passwordChangedAt: req.body.passwordChangedAt,
+    role: req.body.role
   }); //This is not a good way of creating a user, as it may allow all users to signup as admin, therefore checkout the next line:
 
   const token = createToken(newUser._id);
@@ -59,6 +60,15 @@ exports.login = catchAsync(async (req, res, next) => {
     token: token
   });
 });
+
+exports.restrictTo = (...roles) => {
+  return catchAsync(async (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(new AppError('Unathorized user', 403));
+    }
+    return next();
+  });
+};
 
 exports.checkAuth = catchAsync(async (req, res, next) => {
   console.log(`Check auth middleware was called: ${JSON.stringify(req.headers)}`);
