@@ -116,3 +116,35 @@ exports.checkAuth = catchAsync(async (req, res, next) => {
   req.user = user; //We can now put the user into the request for later usages
   next();
 });
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  console.log('forgotPassword was called');
+  //1) Check if email is in database
+  const user = await User.findOne({ email: req.body.email });
+  console.log(`Found user: ${user.name} ok`);
+  if (!user) {
+    return next(new AppError("We didn't found this email in our database", 404));
+  }
+
+  const resetToken = await user.createPasswordResetToken();
+  console.log({ resetToken });
+  // await user.save({ validateBeforeSave: false }); //Saving the updated user document with the new encrypted password reset token, disabling the vlidators is required because we don't have the full user details, only the values we read from the database in line 123 which are not all the required values..
+
+  console.log(`User: id: ${user._id}: ${JSON.stringify(user)}`);
+
+  const updatedUser = await User.findByIdAndUpdate(user._id, user, {
+    new: false,
+    runValidators: false //The validators will run again when updating a document
+  });
+  console.log(`Updated User: id: ${updatedUser}: ${JSON.stringify(user)}`);
+
+  //2) Create a reset password token
+
+  //3) Send token as email
+
+  res.status(201).json({
+    status: 'success',
+    token: resetToken
+  });
+});
+exports.resetPassword = catchAsync(async (req, res, next) => {});
