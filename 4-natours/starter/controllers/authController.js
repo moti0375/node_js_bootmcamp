@@ -2,6 +2,7 @@ const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const AppError = require('../utils/appError');
 const User = require('../models/userModel');
+const sendEmail = require('../utils/email');
 const catchAsync = require('../utils/catchAsync.js');
 
 const createToken = id => {
@@ -126,6 +127,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     return next(new AppError("We didn't found this email in our database", 404));
   }
 
+  //2) Create a reset password token
   const resetToken = await user.createPasswordResetToken();
   console.log({ resetToken });
   // await user.save({ validateBeforeSave: false }); //Saving the updated user document with the new encrypted password reset token, disabling the vlidators is required because we don't have the full user details, only the values we read from the database in line 123 which are not all the required values..
@@ -138,13 +140,29 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   });
   console.log(`Updated User: id: ${updatedUser}: ${JSON.stringify(user)}`);
 
-  //2) Create a reset password token
-
   //3) Send token as email
+  const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+  console.log(`Reset URL: ${resetUrl}`);
 
-  res.status(201).json({
-    status: 'success',
-    token: resetToken
-  });
+  const mailOptions = {
+    email: user.email,
+    subject: 'Reset password',
+    message: `Click here to reset password: ${resetUrl}`
+  };
+
+  try {
+    await sendEmail(mailOptions);
+
+    res.status(201).json({
+      status: 'success',
+      token: 'Reset token sent to your email'
+    });
+  } catch (e) {
+    console.error(e);
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+    return next(new AppError('There was an error sending password reset token.. Please try again later', 500));
+  }
 });
 exports.resetPassword = catchAsync(async (req, res, next) => {});
