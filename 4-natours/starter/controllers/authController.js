@@ -1,5 +1,6 @@
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const AppError = require('../utils/appError');
 const User = require('../models/userModel');
 const sendEmail = require('../utils/email');
@@ -165,4 +166,48 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     return next(new AppError('There was an error sending password reset token.. Please try again later', 500));
   }
 });
-exports.resetPassword = catchAsync(async (req, res, next) => {});
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  //1) Extract reset password info from URL
+  const { password } = req.body;
+  const { confirmPassword } = req.body;
+  const resetToken = req.params.token;
+
+  console.log(`resetPasswordCalled: body: ${JSON.stringify(req.body)}, params: ${JSON.stringify(req.params)}`);
+
+  const ecryptedToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex'); //Encrypt the reset token and save it in the database, like we encrypt passwords
+
+  console.log(`Encrypted token: ${ecryptedToken}`);
+  const user = await User.findOne({
+    passwordResetToken: ecryptedToken,
+    passwordResetExpires: { $gt: Date.now() }
+  }).select('+passwordResetExpires');
+
+  if (!user) {
+    return next(new AppError("Can't find user for this token", 400));
+  }
+
+  //3) Check if reset token expired
+  // const tokenExpiration = user.passwordResetExpires;
+  // console.log(`Found user: ${user.name}, token expiration date: ${tokenExpiration}`);
+
+  // if (new Date() > tokenExpiration) {
+  //   return next(new AppError('Reset token expired, please try again', 401));
+  // }
+
+  user.password = password;
+  user.passwordConfirm = confirmPassword;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+  //5) Delete resetPassword token and token experation date from user document
+  const token = createToken(user._id);
+
+  res.status(201).json({
+    status: 'success',
+    token: token
+  });
+});

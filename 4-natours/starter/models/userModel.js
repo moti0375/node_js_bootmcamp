@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
@@ -65,10 +64,19 @@ const userSchema = new mongoose.Schema({
 
 //Document pre save middleware, runs before save and create
 userSchema.pre('save', async function(next) {
+  console.log('presave middleware');
   console.log(`User Save middleware ${JSON.stringify(this)}`);
   if (!this.isModified('password')) return next(); //Only do if password has been modified
+  console.log('password modified.. encrypt and save');
   this.password = await bcrypt.hash(this.password, 12); //Hash the password with cost of 12
   this.passwordConfirm = undefined; //Removing the confirmation password from the database
+  next();
+});
+
+userSchema.pre('save', async function(next) {
+  if (!this.isModified('password') || this.isNew) return next();
+  console.log('Update the passwordChangedAt - pre save middleware');
+  this.passwordChangedAt = Date.now() - 1000; //This will ensure that passwordChangedAt date be less than the created token time
   next();
 });
 
