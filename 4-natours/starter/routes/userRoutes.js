@@ -13,10 +13,11 @@ router.route('/updatePassword').patch(authController.checkAuth, authController.u
 
 router.route('/').get(controller.getAllUsers);
 
+router.route('/updateMe').patch(authController.checkAuth, controller.updateMe);
+
 router
   .route('/:id')
   .get(controller.getUser)
-  .patch(controller.updateUser)
   .delete(controller.deleteUser);
 
 module.exports = router;
