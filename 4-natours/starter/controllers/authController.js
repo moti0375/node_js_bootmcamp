@@ -10,6 +10,17 @@ const createToken = id => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 };
 
+const createAndSendToken = (res, statusCode, user) => {
+  const token = createToken(user._id);
+  res.status(statusCode).json({
+    status: 'success',
+    token: token,
+    data: {
+      user: user
+    }
+  });
+};
+
 exports.signUp = catchAsync(async (req, res, next) => {
   // const newTour = Tour({ name: req.body.name, price: req.body.price, rating: req.body.rating });
   console.log('createsignUpATour was called');
@@ -25,14 +36,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
     role: req.body.role
   }); //This is not a good way of creating a user, as it may allow all users to signup as admin, therefore checkout the next line:
 
-  const token = createToken(newUser._id);
-  res.status(201).json({
-    status: 'success',
-    token: token,
-    data: {
-      user: newUser
-    }
-  });
+  createAndSendToken(res, 201, newUser);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -55,12 +59,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   //4) If all good, send token to user
-  const token = createToken(user._id);
-
-  res.status(201).json({
-    status: 'success',
-    token: token
-  });
+  createAndSendToken(res, 201, user);
 });
 
 exports.restrictTo = (...roles) => {
@@ -96,7 +95,7 @@ exports.checkAuth = catchAsync(async (req, res, next) => {
 
   const { id } = decodedToken;
   console.log(`Looking for user: ${id}`);
-  const user = await User.findById(id).select('+passwordChangedAt');
+  const user = await User.findById(id).select('+passwordChangedAt +password');
 
   if (!user) {
     console.log(`User not found... `);
@@ -204,10 +203,32 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordResetExpires = undefined;
   await user.save();
   //5) Delete resetPassword token and token experation date from user document
-  const token = createToken(user._id);
+  createAndSendToken(res, 201, user);
+});
 
-  res.status(201).json({
-    status: 'success',
-    token: token
-  });
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  //1) Get the user from the collection
+  const { user } = req;
+  console.log(`Update password: ${JSON.stringify(user)}`);
+
+  //2) Check if Posted current password is correct
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+
+  console.log(
+    `Updating password: oldPassword: ${oldPassword}, newPassword: ${newPassword}, confirmPassword: ${confirmPassword}`
+  );
+
+  if (!user || !(await user.correctPassword(user.password, oldPassword))) {
+    const err = new AppError('Incorrect username or password', 401);
+    console.log(`incorrect password: ${JSON.stringify(err)}`);
+    return next(err);
+  }
+
+  //3) Update user password in collection
+  user.password = newPassword;
+  user.passwordConfirm = confirmPassword;
+  await user.save();
+
+  //4) Send new JWT token
+  createAndSendToken(res, 201, user);
 });
