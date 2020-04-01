@@ -1,5 +1,6 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 
 const app = express();
 const morgan = require('morgan');
@@ -9,18 +10,28 @@ const AppError = require('./utils/appError');
 const errorHandler = require('./controllers/errorController');
 
 // 1) Global Middlewares
+//Development logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev')); //Logging middleware
 }
+//Security http headers
+app.use(helmet()); //
+
+//Security query rate limit from same api
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000, //One hour
   message: 'Too many requests are not allowed please try again in 1 hour'
 });
-
 app.use('/api', limiter);
-app.use(express.json()); //Middleware modify incoming data to json format
+
+//Body parser
+app.use(express.json({ limit: '10kb' })); //Middleware modify incoming data to json format, limit to less than 10kb
+
+//Serving static files
 app.use(express.static(`${__dirname}/public`)); //static files middleware
+
+//Test middleware
 app.use((req, res, next) => {
   //A custom middleware
   // console.log('A request has been received, middleware 😇');
