@@ -8,6 +8,8 @@ const toursRouter = require('./routes/tourRoutes');
 const usersRouter = require('./routes/userRoutes');
 const AppError = require('./utils/appError');
 const errorHandler = require('./controllers/errorController');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 
 // 1) Global Middlewares
 //Development logging
@@ -27,6 +29,12 @@ app.use('/api', limiter);
 
 //Body parser
 app.use(express.json({ limit: '10kb' })); //Middleware modify incoming data to json format, limit to less than 10kb
+
+//Sanitizing data against NoSQL query inject attack
+app.use(mongoSanitize());
+
+//Sanitizing data against XXS attack
+app.use(xss());
 
 //Serving static files
 app.use(express.static(`${__dirname}/public`)); //static files middleware
