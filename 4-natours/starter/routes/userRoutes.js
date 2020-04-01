@@ -14,10 +14,8 @@ router.route('/updatePassword').patch(authController.checkAuth, authController.u
 router.route('/').get(controller.getAllUsers);
 
 router.route('/updateMe').patch(authController.checkAuth, controller.updateMe);
+router.route('/deleteMe').delete(authController.checkAuth, controller.deleteMe);
 
-router
-  .route('/:id')
-  .get(controller.getUser)
-  .delete(controller.deleteUser);
+router.route('/:id').get(controller.getUser);
 
 module.exports = router;

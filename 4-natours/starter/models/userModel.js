@@ -59,6 +59,11 @@ const userSchema = new mongoose.Schema({
   passwordResetExpires: {
     type: Date,
     select: false
+  },
+  active: {
+    type: Boolean,
+    select: false,
+    default: true
   }
 });
 
@@ -77,6 +82,11 @@ userSchema.pre('save', async function(next) {
   if (!this.isModified('password') || this.isNew) return next();
   console.log('Update the passwordChangedAt - pre save middleware');
   this.passwordChangedAt = Date.now() - 1000; //This will ensure that passwordChangedAt date be less than the created token time
+  next();
+});
+
+userSchema.pre(/^find/, async function(next) {
+  this.find({ active: { $ne: false } });
   next();
 });
 

@@ -95,7 +95,7 @@ exports.checkAuth = catchAsync(async (req, res, next) => {
 
   const { id } = decodedToken;
   console.log(`Looking for user: ${id}`);
-  const user = await User.findById(id).select('+passwordChangedAt +password');
+  const user = await User.findById(id).select('+passwordChangedAt +password +actvie');
 
   if (!user) {
     console.log(`User not found... `);

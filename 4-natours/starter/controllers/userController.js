@@ -73,16 +73,18 @@ exports.updateUser = (req, res) => {
   });
 };
 
-exports.deleteUser = (req, res) => {
-  //TODO: handle update a tour ...
+exports.deleteMe = catchAsync(async (req, res, next) => {
+  //TODO: handle update a user ...
 
-  console.log(`Delete user: ${req.params.id}`);
+  console.log(`About to delete user: ${req.user._id}`);
+  const removed = await User.findByIdAndUpdate(req.user._id, { active: false });
+  console.log(`Delete user: ${removed}`);
 
-  res.status(204).json({
+  res.status(200).json({
     status: 'success',
     data: null
   });
-};
+});
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   //1) Create error if user posts password data
