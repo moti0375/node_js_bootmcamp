@@ -90,6 +90,11 @@ userSchema.pre(/^find/, async function(next) {
   next();
 });
 
+userSchema.post('save', async function(next) {
+  console.log(`post create middleware was called ${JSON.stringify(this)}`);
+  this.password = undefined;
+});
+
 userSchema.methods.correctPassword = async function(hashedPassword, enteredPassword) {
   return await bcrypt.compare(enteredPassword, hashedPassword);
 };

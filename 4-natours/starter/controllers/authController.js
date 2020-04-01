@@ -12,6 +12,21 @@ const createToken = id => {
 
 const createAndSendToken = (res, statusCode, user) => {
   const token = createToken(user._id);
+  //Create jwt cookie
+  const cookieOptions = {
+    expires: new Date(Date.now() + process.env.COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+    httpOnly: true //Can be changed only by the browser
+  };
+
+  if (process.env.NODE_ENV === 'production') {
+    cookieOptions.secure = true;
+  }
+
+  res.cookie('jwt', token, cookieOptions);
+  //Done...
+
+  user.password = undefined; //Remove the password from the output
+
   res.status(statusCode).json({
     status: 'success',
     token: token,
