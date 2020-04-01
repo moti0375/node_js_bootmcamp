@@ -1,4 +1,5 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const morgan = require('morgan');
@@ -7,10 +8,17 @@ const usersRouter = require('./routes/userRoutes');
 const AppError = require('./utils/appError');
 const errorHandler = require('./controllers/errorController');
 
-// 1) Middlewares
+// 1) Global Middlewares
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev')); //Logging middleware
 }
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000, //One hour
+  message: 'Too many requests are not allowed please try again in 1 hour'
+});
+
+app.use('/api', limiter);
 app.use(express.json()); //Middleware modify incoming data to json format
 app.use(express.static(`${__dirname}/public`)); //static files middleware
 app.use((req, res, next) => {
