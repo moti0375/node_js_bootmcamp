@@ -11,7 +11,7 @@ const Tour = require('../../models/tourModel');
 const DB =
   'mongodb+srv://natours-remote-db:uORaJ5YvcPFsComh@natours-app-course-rpoqx.mongodb.net/natours?retryWrites=true&w=majority';
 
-const tours = JSON.parse(fs.readFileSync('./tours-simple.json', 'utf-8'));
+const tours = JSON.parse(fs.readFileSync('./tours.json', 'utf-8'));
 
 // console.log(tours);
 
