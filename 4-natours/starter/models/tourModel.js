@@ -150,9 +150,16 @@ tourSchema.pre(/^find/, function(next) {
   next();
 });
 
+tourSchema.pre(/^find/, function(next) {
+  this.find().populate({
+    path: 'guides',
+    select: '-__v'
+  });
+  next();
+});
+
 //Query post find middleware, will run before any find query
 tourSchema.post(/^find/, function(docs, next) {
-  console.log(`Command tooks: ${Date.now() - this.start} mSec`);
   next();
 });
 
