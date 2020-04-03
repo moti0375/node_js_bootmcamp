@@ -105,7 +105,12 @@ const tourSchema = new mongoose.Schema(
         day: Number
       }
     ],
-    guides: Array
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+      }
+    ]
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -120,15 +125,14 @@ tourSchema.pre('save', function(next) {
   next();
 });
 
-tourSchema.pre('save', async function(next) {
-  const guidesPromises = this.guides.map(async id => {
-    console.log(`Mapping ${id}`);
-    return await User.findById(id);
-  });
-
-  this.guides = await Promise.all(guidesPromises);
-  next();
-});
+//Canceled embedding tour guids in tour model
+// tourSchema.pre('save', async function(next) {
+//   const guidesPromises = this.guides.map(async id => {
+//     return await User.findById(id);
+//   });
+//   this.guides = await Promise.all(guidesPromises);
+//   next();
+// });
 
 //Document post save middleware, runs after save and create actions
 tourSchema.post('save', function(doc, next) {
