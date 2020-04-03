@@ -1,6 +1,9 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const hpp = require('hpp');
 
 const app = express();
 const morgan = require('morgan');
@@ -8,8 +11,6 @@ const toursRouter = require('./routes/tourRoutes');
 const usersRouter = require('./routes/userRoutes');
 const AppError = require('./utils/appError');
 const errorHandler = require('./controllers/errorController');
-const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
 
 // 1) Global Middlewares
 //Development logging
@@ -35,6 +36,13 @@ app.use(mongoSanitize());
 
 //Sanitizing data against XXS attack
 app.use(xss());
+
+//Prevent params polution
+app.use(
+  hpp({
+    whitelist: ['duration', 'difficulty', 'ratingsAverage', 'ratingsQuantity', 'difficulty', 'maxGroupSize', 'price']
+  })
+);
 
 //Serving static files
 app.use(express.static(`${__dirname}/public`)); //static files middleware
