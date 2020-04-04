@@ -13,17 +13,19 @@ router.use('/:tourId/reviews', reviewRouter);
 
 router.route('/top_five_cheep').get(controller.aliasTopTours, controller.getAllTours);
 router.route('/stats').get(controller.getToursStats);
-router.route('/monthly-plan/:year').get(controller.getMontlyPlan);
+router
+  .route('/monthly-plan/:year')
+  .get(authController.checkAuth, authController.restrictTo('admin', 'guide', 'lead-guide'), controller.getMontlyPlan);
 
 router
   .route('/')
-  .get(authController.checkAuth, controller.getAllTours)
-  .post(controller.createTour); //New version with route
+  .get(controller.getAllTours)
+  .post(authController.checkAuth, authController.restrictTo('admin', 'lead-guide'), controller.createTour); //New version with route
 
 router
   .route('/:id')
   .get(controller.getTour)
-  .patch(controller.updateTour)
+  .patch(authController.checkAuth, authController.restrictTo('admin', 'lead-guide'), controller.updateTour)
   .delete(authController.checkAuth, authController.restrictTo('admin', 'lead-guide'), controller.deleteTour); //New version with route
 
 module.exports = router;
