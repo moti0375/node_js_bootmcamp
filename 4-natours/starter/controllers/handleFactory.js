@@ -13,3 +13,38 @@ exports.deleteOne = Model =>
       data: null
     });
   });
+
+exports.updateOne = Model =>
+  catchAsync(async (req, res, next) => {
+    const document = await Model.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true //The validators will run again when updating a document
+    });
+
+    if (!document) {
+      return next(new AppError(`Cannot find document with this id: ${req.params.id}`), 404);
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        data: document
+      }
+    });
+  });
+
+exports.createOne = Model =>
+  catchAsync(async (req, res, next) => {
+    const document = await Model.create(req.body);
+
+    if (!document) {
+      return next(new AppError(`Cannot create document`), 404);
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        data: document
+      }
+    });
+  });

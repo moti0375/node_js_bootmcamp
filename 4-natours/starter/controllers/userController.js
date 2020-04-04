@@ -61,19 +61,7 @@ exports.getUser = (req, res) => {
   });
 };
 
-exports.updateUser = (req, res) => {
-  //TODO: handle update a tour ...
-
-  console.log(`Update user: ${req.params.id}`);
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      user: 'Updated tour...'
-    }
-  });
-};
-
+exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
 
 exports.deleteMe = catchAsync(async (req, res, next) => {

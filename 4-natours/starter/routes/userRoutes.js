@@ -19,6 +19,7 @@ router.route('/deleteMe').delete(authController.checkAuth, controller.deleteMe);
 router
   .route('/:id')
   .get(controller.getUser)
-  .delete(authController.checkAuth, controller.deleteUser);
+  .delete(authController.checkAuth, controller.deleteUser)
+  .patch(authController.checkAuth, authController.restrictTo('admin'), controller.updateUser);
 
 module.exports = router;
