@@ -14,20 +14,6 @@ const filterObj = (obj, ...allowedFields) => {
 };
 
 //Users
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  //Execute the query
-  const users = await User.find();
-
-  //Sending the response
-  res.status(200).json({
-    status: 'success',
-    requestedAt: req.requestTime,
-    results: users.length,
-    data: {
-      users
-    }
-  });
-});
 
 exports.checkId = (req, res, next, val) => {
   const user = User.find(el => el._id === val);
@@ -43,26 +29,6 @@ exports.checkId = (req, res, next, val) => {
   }
   next();
 };
-
-exports.getUser = (req, res) => {
-  const { id } = req.params;
-  console.log(`${id}`);
-
-  const user = User.find(el => el._id === id);
-  // console.log(tour);
-
-  res.status(200).json({
-    status: 'success',
-    requestedAt: req.requestTime,
-    results: 1,
-    data: {
-      user
-    }
-  });
-};
-
-exports.updateUser = factory.updateOne(User);
-exports.deleteUser = factory.deleteOne(User);
 
 exports.deleteMe = catchAsync(async (req, res, next) => {
   //TODO: handle update a user ...
@@ -110,3 +76,8 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     }
   });
 });
+
+exports.getUser = factory.getOne(User);
+exports.getAllUsers = factory.getAll(User);
+exports.updateUser = factory.updateOne(User);
+exports.deleteUser = factory.deleteOne(User);

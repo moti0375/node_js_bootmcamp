@@ -4,13 +4,8 @@ const AppError = require('../utils/appError');
 const factory = require('./handleFactory');
 
 exports.getAllReviews = catchAsync(async (req, res, next) => {
-  let filter = {};
-  if (req.params.tourId) {
-    filter = { tour: req.params.tourId };
-  }
-
   //Execute the query
-  const reviews = await Review.find(filter);
+  const reviews = await Review.find();
 
   //Sending the response
   res.status(200).json({
@@ -30,5 +25,7 @@ exports.setTourAndUserId = (req, res, next) => {
 };
 
 exports.createReview = factory.createOne(Review);
+exports.getAllReviews = factory.getAll(Review);
+exports.getReview = factory.getOne(Review);
 exports.deleteReview = factory.deleteOne(Review);
 exports.updateReview = factory.updateOne(Review);

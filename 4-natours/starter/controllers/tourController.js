@@ -1,7 +1,5 @@
 const Tour = require('../models/tourModel.js');
-const ApiFeaturs = require('../utils/apiFeaturs');
 const catchAsync = require('../utils/catchAsync.js');
-const AppError = require('../utils/appError');
 const factory = require('./handleFactory');
 // const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)); //Now we will get the data from mongoose
 
@@ -54,47 +52,9 @@ exports.aliasTopTours = (req, res, next) => {
   next();
 };
 
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  //Execute the query
-  const features = await new ApiFeaturs(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-
-  const tours = await features.query;
-
-  //Sending the response
-  res.status(200).json({
-    status: 'success',
-    requestedAt: req.requestTime,
-    results: tours.length,
-    data: {
-      tours
-    }
-  });
-});
-
-exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate('reviews');
-  // const ture = await Tour.findOne({ _id: req.params.id });  same as findById
-
-  console.log(`getTour: ${tour}`);
-  if (!tour) {
-    return next(new AppError(`Cannot find such tour with this id: ${req.params.id}`), 404);
-  }
-
-  res.status(200).json({
-    status: 'success',
-    requestedAt: req.requestTime,
-    results: 1,
-    data: {
-      tour
-    }
-  });
-});
-
 exports.createTour = factory.createOne(Tour);
+exports.getAllTours = factory.getAll(Tour);
+exports.getTour = factory.getOne(Tour, { path: 'reviews' });
 exports.updateTour = factory.updateOne(Tour);
 exports.deleteTour = factory.deleteOne(Tour);
 
