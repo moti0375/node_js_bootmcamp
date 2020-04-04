@@ -15,6 +15,7 @@ router.route('/').get(controller.getAllUsers);
 
 router.route('/updateMe').patch(authController.checkAuth, controller.updateMe);
 router.route('/deleteMe').delete(authController.checkAuth, controller.deleteMe);
+router.route('/me').get(authController.checkAuth, controller.getMeMiddleware, controller.getUser);
 
 router
   .route('/:id')

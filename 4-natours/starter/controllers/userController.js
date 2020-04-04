@@ -43,6 +43,14 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getMeMiddleware = (req, res, next) => {
+  console.log(`Get me middleware`);
+
+  req.params.id = req.user.id;
+  console.log(`Req params: ${JSON.stringify(req.params)}`);
+  next();
+};
+
 exports.updateMe = catchAsync(async (req, res, next) => {
   //1) Create error if user posts password data
   console.log(`UpdateMe was called ${JSON.stringify(req.body)}`);
