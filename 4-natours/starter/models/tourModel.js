@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 const validator = require('validator');
-const User = require('./userModel');
+const Review = require('./reviewModel');
 
 const tourSchema = new mongoose.Schema(
   {
@@ -116,6 +116,13 @@ const tourSchema = new mongoose.Schema(
 );
 tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
+});
+
+//Virtual populate for reviews
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id'
 });
 
 //Document pre save middleware, runs before save and create
