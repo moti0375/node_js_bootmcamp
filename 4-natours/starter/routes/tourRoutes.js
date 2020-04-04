@@ -1,6 +1,7 @@
 const express = require('express');
 const controller = require('../controllers/tourController');
 const authController = require('../controllers/authController');
+const reviewController = require('../controllers/reviewController');
 
 const router = express.Router();
 // router.param('id', controller.checkId); //Used to work with local storage, no need to add this middleware for id checking
@@ -22,5 +23,9 @@ router
   .get(controller.getTour)
   .patch(controller.updateTour)
   .delete(authController.checkAuth, authController.restrictTo('admin', 'lead-guide'), controller.deleteTour); //New version with route
+
+router
+  .route('/:tourId/reviews')
+  .post(authController.checkAuth, authController.restrictTo('user'), reviewController.createReview);
 
 module.exports = router;
