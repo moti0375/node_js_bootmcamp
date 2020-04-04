@@ -19,9 +19,9 @@ class ApiFeaturs {
       return `$${match}`;
     });
 
-    qryString = qryString.replace('.', () => {
-      ' ';
-    });
+    // qryString = qryString.replace('.', () => {
+    //   ' ';
+    // });
 
     // console.log(`Filtered queryString: ${queryString}`);
     const filteredQuery = JSON.parse(qryString);
