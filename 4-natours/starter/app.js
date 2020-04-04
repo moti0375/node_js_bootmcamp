@@ -9,6 +9,7 @@ const app = express();
 const morgan = require('morgan');
 const toursRouter = require('./routes/tourRoutes');
 const usersRouter = require('./routes/userRoutes');
+const reviewRouter = require('./routes/reviewRouter');
 const AppError = require('./utils/appError');
 const errorHandler = require('./controllers/errorController');
 
@@ -77,6 +78,7 @@ app.use((req, res, next) => {
 // app.delete('/api/v1/tours/:id', deleteTour);
 app.use('/api/v1/users', usersRouter); //UsersRouter middleware
 app.use('/api/v1/tours', toursRouter); //ToursRouter middleware
+app.use('/api/v1/reviews', reviewRouter); //Review middleware
 
 //This is the last route which means there was an error to analyze the req url, a generic error handler
 app.all('*', (req, res, next) => {

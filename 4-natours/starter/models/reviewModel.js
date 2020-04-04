@@ -48,5 +48,11 @@ reviewSchema.pre(/^find/, function(next) {
   next();
 });
 
+reviewSchema.pre('save', function(next) {
+  // console.log(`Save middleware ${JSON.stringify(this)}`);
+  this.createAt = Date.now();
+  next();
+});
+
 const Review = mongoose.model('Review', reviewSchema);
 module.exports = Review;
