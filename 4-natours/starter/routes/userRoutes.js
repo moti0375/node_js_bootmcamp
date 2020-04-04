@@ -16,6 +16,9 @@ router.route('/').get(controller.getAllUsers);
 router.route('/updateMe').patch(authController.checkAuth, controller.updateMe);
 router.route('/deleteMe').delete(authController.checkAuth, controller.deleteMe);
 
-router.route('/:id').get(controller.getUser);
+router
+  .route('/:id')
+  .get(controller.getUser)
+  .delete(authController.checkAuth, controller.deleteUser);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const Tour = require('../models/tourModel.js');
 const ApiFeaturs = require('../utils/apiFeaturs');
 const catchAsync = require('../utils/catchAsync.js');
 const AppError = require('../utils/appError');
-
+const factory = require('./handleFactory');
 // const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)); //Now we will get the data from mongoose
 
 //Used when we worked localy
@@ -125,19 +125,22 @@ exports.updateTour = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteTour = catchAsync(async (req, res, next) => {
-  // const deletById = await Tour.deleteOne({ _id: req.params.id });
-  const tour = await Tour.findByIdAndDelete(req.params.id); //same as deleteOne
+exports.deleteTour = factory.deleteOne(Tour);
 
-  if (!tour) {
-    return next(new AppError(`Cannot find such tour with this id: ${req.params.id}`), 404);
-  }
+//Use Factory now!!
+// exports.deleteTour = catchAsync(async (req, res, next) => {
+//   // const deletById = await Tour.deleteOne({ _id: req.params.id });
+//   const tour = await Tour.findByIdAndDelete(req.params.id); //same as deleteOne
 
-  res.status(200).json({
-    status: 'success',
-    data: null
-  });
-});
+//   if (!tour) {
+//     return next(new AppError(`Cannot find such tour with this id: ${req.params.id}`), 404);
+//   }
+
+//   res.status(200).json({
+//     status: 'success',
+//     data: null
+//   });
+// });
 
 exports.getToursStats = catchAsync(async (req, res, next) => {
   console.log('getToursStats');
