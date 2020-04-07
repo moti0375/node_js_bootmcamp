@@ -1,6 +1,7 @@
 const Tour = require('../models/tourModel.js');
 const catchAsync = require('../utils/catchAsync.js');
 const factory = require('./handleFactory');
+const AppError = require('../utils/appError');
 // const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)); //Now we will get the data from mongoose
 
 //Used when we worked localy
@@ -51,6 +52,39 @@ exports.aliasTopTours = (req, res, next) => {
   console.log(req.query.limit);
   next();
 };
+
+//api/v1/tours/tours-within/:distance/center/:latlng/unit/:units
+exports.getToursWithin = catchAsync(async (req, res, next) => {
+  const { distance, latlng, units } = req.params;
+  const [lat, lng] = latlng.split(',');
+
+  const earthMilesRadius = 3963.2;
+  const earthMilesMetric = 6378.1;
+
+  const radius = units === 'mi' ? distance / earthMilesRadius : distance / earthMilesMetric;
+  if (!lat || !lng) {
+    return next(new AppError('Please provide latitude and logtitude', 400));
+  }
+  console.log(`lat: ${lat}, lng: ${lng}`);
+
+  console.log(`getToursWithin: ${JSON.stringify(req.params)}`);
+
+  const tours = await Tour.find({
+    startLocation: {
+      $geoWithin: {
+        $centerSphere: [[lng, lat], radius]
+      }
+    }
+  });
+
+  res.status(200).json({
+    status: 'success',
+    results: tours.length,
+    data: {
+      data: tours
+    }
+  });
+});
 
 exports.createTour = factory.createOne(Tour);
 exports.getAllTours = factory.getAll(Tour);
