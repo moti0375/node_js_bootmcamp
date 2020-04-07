@@ -33,6 +33,8 @@ const reviewSchema = new mongoose.Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } } //Adding virtual field (a calculated value which not stored in database) to the json or object
 );
 
+reviewSchema.index({ tour: 1, author: 1 }, { unique: true });
+
 reviewSchema.pre(/^find/, function(next) {
   this.find().populate({
     path: 'author',
