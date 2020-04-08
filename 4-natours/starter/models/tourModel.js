@@ -117,7 +117,7 @@ const tourSchema = new mongoose.Schema(
 
 tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ slug: 1 });
-tourSchema.index({ startLocation: '2dsphare' });
+tourSchema.index({ startLocation: '2dsphere' });
 
 tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
@@ -176,17 +176,17 @@ tourSchema.post(/^find/, function(docs, next) {
 });
 
 //Query pre aggregation middleware, will run before any find query
-tourSchema.pre('aggregate', function(next) {
-  this.pipeline().unshift({
-    //Add an element and the top of an array
-    $match: {
-      secretTour: { $ne: true }
-    }
-  });
-  console.log(this);
-  console.log(`Aggregation middleware: called`);
-  next();
-});
+// tourSchema.pre('aggregate', function(next) {
+//   this.pipeline().unshift({
+//     //Add an element and the top of an array
+//     $match: {
+//       secretTour: { $ne: true }
+//     }
+//   });
+//   console.log(this);
+//   console.log(`Aggregation middleware: called`);
+//   next();
+// });
 
 const Tour = mongoose.model('Tour', tourSchema);
 module.exports = Tour;

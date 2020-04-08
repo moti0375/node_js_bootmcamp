@@ -86,6 +86,43 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getToursDistances = catchAsync(async (req, res, next) => {
+  const { latlng, units } = req.params;
+  const [lat, lng] = latlng.split(',');
+
+  if (!lat || !lng) {
+    return next(new AppError('Please provide latitude and logtitude', 400));
+  }
+  console.log(`lat: ${lat}, lng: ${lng}`);
+  const multiplier = units === 'mi' ? 0.000621371 : 0.001;
+
+  console.log(`getToursDistances: ${JSON.stringify(req.params)}`);
+
+  const distances = await Tour.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [lat * 1, lng * 1]
+        },
+        distanceField: 'distance',
+        distanceMultiplier: multiplier
+      }
+    },
+    {
+      $project: {
+        distance: 1,
+        name: 1
+      }
+    }
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    results: distances
+  });
+});
+
 exports.createTour = factory.createOne(Tour);
 exports.getAllTours = factory.getAll(Tour);
 exports.getTour = factory.getOne(Tour, { path: 'reviews' });

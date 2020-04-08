@@ -18,6 +18,7 @@ router
   .get(authController.checkAuth, authController.restrictTo('admin', 'guide', 'lead-guide'), controller.getMontlyPlan);
 
 router.route('/tours-within/:distance/center/:latlng/unit/:unit').get(controller.getToursWithin);
+router.route('/distances/:latlng/unit/:unit').get(controller.getToursDistances);
 
 router
   .route('/')
