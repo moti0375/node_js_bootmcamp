@@ -10,6 +10,7 @@ const morgan = require('morgan');
 const toursRouter = require('./routes/tourRoutes');
 const usersRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRouter');
+const viewRouter = require('./routes/viewRouter');
 const AppError = require('./utils/appError');
 const errorHandler = require('./controllers/errorController');
 
@@ -65,25 +66,27 @@ app.use((req, res, next) => {
 });
 
 // 3) Routes handlers
-app.get('/', (req, res) => {
-  res.status(200).render('base', {
-    tour: 'Eilat Israel',
-    user: 'Moti Bartov'
-  });
-});
+//View routes moved to view router
+// app.get('/', (req, res) => {
+//   res.status(200).render('base', {
+//     tour: 'Eilat Israel',
+//     user: 'Moti Bartov'
+//   });
+// });
 
-app.get('/overview', (req, res) => {
-  res.status(200).render('overview', {
-    title: 'All Tours'
-  });
-});
+// app.get('/overview', (req, res) => {
+//   res.status(200).render('overview', {
+//     title: 'All Tours'
+//   });
+// });
 
-app.get('/tour', (req, res) => {
-  res.status(200).render('tour', {
-    title: 'Forest Hiker'
-  });
-});
+// app.get('/tour', (req, res) => {
+//   res.status(200).render('tour', {
+//     title: 'Forest Hiker'
+//   });
+// });
 
+app.use('/', viewRouter); //Review middleware
 app.use('/api/v1/users', usersRouter); //UsersRouter middleware
 app.use('/api/v1/tours', toursRouter); //ToursRouter middleware
 app.use('/api/v1/reviews', reviewRouter); //Review middleware
