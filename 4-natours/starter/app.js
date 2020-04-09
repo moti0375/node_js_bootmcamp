@@ -66,7 +66,10 @@ app.use((req, res, next) => {
 
 // 3) Routes handlers
 app.get('/', (req, res) => {
-  res.status(200).render('base');
+  res.status(200).render('base', {
+    tour: 'Eilat Israel',
+    user: 'Moti Bartov'
+  });
 });
 
 app.use('/api/v1/users', usersRouter); //UsersRouter middleware
