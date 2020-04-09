@@ -87,14 +87,14 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
 });
 
 exports.getToursDistances = catchAsync(async (req, res, next) => {
-  const { latlng, units } = req.params;
+  const { latlng, unit } = req.params;
   const [lat, lng] = latlng.split(',');
 
   if (!lat || !lng) {
     return next(new AppError('Please provide latitude and logtitude', 400));
   }
   console.log(`lat: ${lat}, lng: ${lng}`);
-  const multiplier = units === 'mi' ? 0.000621371 : 0.001;
+  const multiplier = unit === 'mi' ? 0.000621371 : 0.001;
 
   console.log(`getToursDistances: ${JSON.stringify(req.params)}`);
 
