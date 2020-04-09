@@ -72,6 +72,18 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/overview', (req, res) => {
+  res.status(200).render('overview', {
+    title: 'All Tours'
+  });
+});
+
+app.get('/tour', (req, res) => {
+  res.status(200).render('tour', {
+    title: 'Forest Hiker'
+  });
+});
+
 app.use('/api/v1/users', usersRouter); //UsersRouter middleware
 app.use('/api/v1/tours', toursRouter); //ToursRouter middleware
 app.use('/api/v1/reviews', reviewRouter); //Review middleware
