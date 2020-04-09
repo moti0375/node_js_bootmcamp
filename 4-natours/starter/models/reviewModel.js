@@ -24,7 +24,7 @@ const reviewSchema = new mongoose.Schema(
       ref: 'Tour',
       required: [true, 'A Review must belong to a tour.']
     },
-    author: {
+    user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: [true, 'A Review must belong to a user']
@@ -33,11 +33,11 @@ const reviewSchema = new mongoose.Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } } //Adding virtual field (a calculated value which not stored in database) to the json or object
 );
 
-reviewSchema.index({ tour: 1, author: 1 }, { unique: true });
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 reviewSchema.pre(/^find/, function(next) {
   this.find().populate({
-    path: 'author',
+    path: 'user',
     select: 'name photo'
   });
 
