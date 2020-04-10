@@ -137,6 +137,44 @@ exports.checkAuth = catchAsync(async (req, res, next) => {
   next();
 });
 
+//Only for rendered pages..
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  console.log(`Check isLoggedIn middleware was called: ${JSON.stringify(req.headers)}`);
+  //1) Get the token and check if it exists
+
+  // console.log(`Token: ${token}`);
+  if (req.cookies.jwt) {
+    //2) Check token verification valid
+    const decodedToken = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+    console.log(decodedToken);
+
+    //3) Check if the user still exists
+
+    const { id } = decodedToken;
+    console.log(`Looking for user: ${id}`);
+    const user = await User.findById(id).select('+passwordChangedAt +password');
+
+    if (!user) {
+      return next();
+    }
+
+    // console.log(`Founded user: ${JSON.stringify(user)}`);
+    //4) Check if user changed password after JWT was issued
+    const { passwordChangedAt } = user;
+    console.log(`Password changed date: ${passwordChangedAt}`);
+    const passwordChanged = await user.changedPasswordAfter(decodedToken.iat);
+    console.log(`Password changed: ${passwordChanged}`);
+
+    if (passwordChanged) {
+      return next();
+    }
+
+    res.locals.user = user; //Makes the user available in views templates (pugs)
+    return next();
+  }
+  next();
+});
+
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   console.log('forgotPassword was called');
   //1) Check if email is in database
