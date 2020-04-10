@@ -1,5 +1,8 @@
 /* eslint-disable */
-const login = async (email, password) => {
+import axios from 'axios';
+import { showAlert } from './alerts';
+
+export const login = async (email, password) => {
   //   alert(email, password);
   console.log(`login was called, about to login.. email: ${email}, password: ${password}`);
   try {
@@ -13,22 +16,18 @@ const login = async (email, password) => {
     });
 
     if (res.data.status === 'success') {
-      alert('Logged in successfuly');
+      showAlert('success', 'Login sucess');
       window.setTimeout(() => {
         location.assign('/');
       }, 1500);
     }
     console.log(res);
   } catch (e) {
-    console.log(e.response.data);
-    alert(e.response.data.message);
+    // console.log(e.response.data);
+    if (e.response.data) {
+      showAlert('error', e.response.data.message);
+    } else {
+      showAlert('error', 'There was an error, try again later..');
+    }
   }
 };
-
-document.querySelector('.form').addEventListener('submit', e => {
-  e.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  console.log(`Submit button clicked: email: ${email}, password: ${password}`);
-  login(email, password);
-});
