@@ -34,3 +34,14 @@ exports.getTourDetails = catchAsync(async (req, res, next) => {
 
   //   next();
 });
+
+exports.getLoginForm = catchAsync(async (req, res, next) => {
+  console.log(`login:`);
+
+  //3) Render the template using the tour
+  res.status(200).render('login', {
+    title: `Natours Login`
+  });
+
+  //   next();
+});

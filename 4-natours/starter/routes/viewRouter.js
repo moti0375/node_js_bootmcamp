@@ -4,6 +4,8 @@ const controller = require('../controllers/viewsController');
 const router = express.Router();
 
 router.get('/', controller.getOverview);
+router.get('/login', controller.getLoginForm);
+
 router.get('/overview', controller.getOverview);
 router.get('/tour/:slug', controller.getTourDetails);
 
