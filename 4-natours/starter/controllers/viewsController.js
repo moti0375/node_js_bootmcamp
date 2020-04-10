@@ -12,7 +12,7 @@ exports.getOverview = catchAsync(async (req, res, next) => {
     title: 'All Tours',
     tours: tours
   });
-  next();
+  // next();
 });
 
 exports.getTourDetails = catchAsync(async (req, res, next) => {
@@ -28,9 +28,9 @@ exports.getTourDetails = catchAsync(async (req, res, next) => {
 
   //3) Render the template using the tour
   res.status(200).render('tour', {
-    title: 'Forest Hiker',
+    title: `${tour.name} Tour`,
     tour
   });
 
-  next();
+  //   next();
 });

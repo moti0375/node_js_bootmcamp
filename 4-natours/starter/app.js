@@ -86,7 +86,7 @@ app.use((req, res, next) => {
 //   });
 // });
 
-app.use('/', viewRouter); //Review middleware
+app.use('/', viewRouter); //ViewsRouter middleware
 app.use('/api/v1/users', usersRouter); //UsersRouter middleware
 app.use('/api/v1/tours', toursRouter); //ToursRouter middleware
 app.use('/api/v1/reviews', reviewRouter); //Review middleware
