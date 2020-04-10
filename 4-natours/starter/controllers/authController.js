@@ -93,7 +93,11 @@ exports.checkAuth = catchAsync(async (req, res, next) => {
 
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    console.log('Authorized by cookie: browser...');
+    token = req.cookies.jwt;
   }
+
   // console.log(`Token: ${token}`);
   if (!token) {
     return next(new AppError('You are not logged in.', 401));

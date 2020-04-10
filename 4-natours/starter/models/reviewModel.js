@@ -1,6 +1,6 @@
 //review, rating, createdAt, ref to a Tour, ref to a User
-const Tour = require('./tourModel.js');
 const mongoose = require('mongoose');
+const Tour = require('./tourModel.js');
 
 const reviewSchema = new mongoose.Schema(
   {

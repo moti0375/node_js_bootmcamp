@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -39,6 +40,9 @@ app.use('/api', limiter);
 //Body parser
 app.use(express.json({ limit: '10kb' })); //Middleware modify incoming data to json format, limit to less than 10kb
 
+//Cookie parser
+app.use(cookieParser());
+
 //Sanitizing data against NoSQL query inject attack
 app.use(mongoSanitize());
 
@@ -56,6 +60,7 @@ app.use(
 app.use((req, res, next) => {
   //A custom middleware
   // console.log('A request has been received, middleware 😇');
+  console.log(req.cookies);
   next();
 });
 
