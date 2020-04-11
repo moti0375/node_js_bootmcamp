@@ -77,6 +77,19 @@ exports.login = catchAsync(async (req, res, next) => {
   createAndSendToken(res, 201, user);
 });
 
+exports.logout = catchAsync(async (req, res, next) => {
+  console.log('logout was called');
+  const cookieOptions = {
+    expires: new Date(Date.now() + 10 * 1000), //10 seconds
+    httpOnly: true //Can be changed only by the browser
+  };
+
+  res.cookie('jwt', 'logedout', cookieOptions);
+  res.status(200).json({
+    status: 'success'
+  });
+});
+
 exports.restrictTo = (...roles) => {
   return catchAsync(async (req, res, next) => {
     if (!roles.includes(req.user.role)) {
@@ -138,42 +151,46 @@ exports.checkAuth = catchAsync(async (req, res, next) => {
 });
 
 //Only for rendered pages..
-exports.isLoggedIn = catchAsync(async (req, res, next) => {
+exports.isLoggedIn = async (req, res, next) => {
   console.log(`Check isLoggedIn middleware was called: ${JSON.stringify(req.headers)}`);
-  //1) Get the token and check if it exists
 
   // console.log(`Token: ${token}`);
+  //1) Get the token and check if it exists
   if (req.cookies.jwt) {
-    //2) Check token verification valid
-    const decodedToken = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-    console.log(decodedToken);
+    try {
+      //2) Check token verification valid
+      const decodedToken = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+      console.log(decodedToken);
 
-    //3) Check if the user still exists
+      //3) Check if the user still exists
 
-    const { id } = decodedToken;
-    console.log(`Looking for user: ${id}`);
-    const user = await User.findById(id).select('+passwordChangedAt +password');
+      const { id } = decodedToken;
+      console.log(`Looking for user: ${id}`);
+      const user = await User.findById(id).select('+passwordChangedAt +password');
 
-    if (!user) {
+      if (!user) {
+        return next();
+      }
+
+      // console.log(`Founded user: ${JSON.stringify(user)}`);
+      //4) Check if user changed password after JWT was issued
+      const { passwordChangedAt } = user;
+      console.log(`Password changed date: ${passwordChangedAt}`);
+      const passwordChanged = await user.changedPasswordAfter(decodedToken.iat);
+      console.log(`Password changed: ${passwordChanged}`);
+
+      if (passwordChanged) {
+        return next();
+      }
+
+      res.locals.user = user; //Makes the user available in views templates (pugs)
       return next();
+    } catch (e) {
+      next();
     }
-
-    // console.log(`Founded user: ${JSON.stringify(user)}`);
-    //4) Check if user changed password after JWT was issued
-    const { passwordChangedAt } = user;
-    console.log(`Password changed date: ${passwordChangedAt}`);
-    const passwordChanged = await user.changedPasswordAfter(decodedToken.iat);
-    console.log(`Password changed: ${passwordChanged}`);
-
-    if (passwordChanged) {
-      return next();
-    }
-
-    res.locals.user = user; //Makes the user available in views templates (pugs)
-    return next();
   }
   next();
-});
+};
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   console.log('forgotPassword was called');

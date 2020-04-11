@@ -2,10 +2,13 @@
 import '@babel/polyfill'; //Used to support older browsers for running js
 import { displayMap } from './mapbox.js';
 import { login } from './login.js';
+import { logout } from './logout.js';
 
 //Values
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form');
+const loginNavButton = document.querySelector('.form');
+const logoutButton = document.querySelector('.nav__el--logout');
 
 if (loginForm) {
   console.log('Login form exists');
@@ -21,4 +24,12 @@ if (loginForm) {
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
   displayMap(locations);
+}
+
+if (logoutButton) {
+  console.log('Found logout button');
+  logoutButton.addEventListener('click', e => {
+    console.log('Logout button clicked');
+    logout();
+  });
 }
