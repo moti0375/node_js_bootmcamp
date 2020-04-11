@@ -8831,6 +8831,7 @@ var _logout = require("./logout.js");
 //Values
 var mapBox = document.getElementById('map');
 var loginForm = document.querySelector('.form');
+var loginNavButton = document.querySelector('.form');
 var logoutButton = document.querySelector('.nav__el--logout');
 
 if (loginForm) {

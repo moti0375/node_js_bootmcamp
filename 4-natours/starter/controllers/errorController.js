@@ -29,29 +29,44 @@ const handleJwtError = () => {
 
 const handleJwtExpired = () => new AppError(`Token expired, please login again`, 401);
 
-const sendErrorDev = (err, res) => {
-  res.status(err.statusCode).json({
-    status: err.status,
-    error: err,
-    message: err.message,
-    stack: err.stack
+const sendErrorDev = (err, req, res) => {
+  //API
+  if (req.originalUrl.startsWith('/api')) {
+    return res.status(err.statusCode).json({
+      status: err.status,
+      error: err,
+      message: err.message,
+      stack: err.stack
+    });
+  }
+  //RENDERD WEB SITE
+  console.log(`Rendring error page...: ${JSON.stringify(err)}`);
+  return res.status(err.statusCode).render('error', {
+    title: `Something went wrong`,
+    msg: err.message
   });
 };
 
-const sendErrorProd = (err, res) => {
+const sendErrorProd = (err, req, res) => {
   console.log(`sendErrorProd: ${err.message}`);
-  if (err.isOperational) {
-    res.status(err.statusCode).json({
-      status: err.status,
-      message: err.message
-    });
-  } else {
+  if (req.originalUrl.startsWith('/api')) {
+    if (err.isOperational) {
+      return res.status(err.statusCode).json({
+        status: err.status,
+        message: err.message
+      });
+    }
     console.error('💥 ERROR:', err);
-    res.status(500).json({
+    return res.status(500).json({
       status: err.status,
       message: 'Something went very wrong'
     });
   }
+  //For rendered web site
+  return res.status(err.statusCode).render('error', {
+    title: `Something went wrong`,
+    msg: 'Please try again later'
+  });
 };
 
 module.exports = (err, req, res, next) => {
@@ -60,7 +75,7 @@ module.exports = (err, req, res, next) => {
   err.status = err.status || 'error';
 
   if (process.env.NODE_ENV === 'development') {
-    sendErrorDev(err, res);
+    sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === 'production') {
     let error = Object.assign(err);
     if (error.name === 'CastError') {
@@ -75,6 +90,6 @@ module.exports = (err, req, res, next) => {
       error = handleJwtExpired(error);
     }
 
-    sendErrorProd(error, res);
+    sendErrorProd(error, req, res);
   }
 };
