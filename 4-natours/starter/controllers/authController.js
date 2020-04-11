@@ -147,6 +147,7 @@ exports.checkAuth = catchAsync(async (req, res, next) => {
 
   //All set, get protected data!
   req.user = user; //We can now put the user into the request for later usages
+  res.locals.user = user;
   next();
 });
 

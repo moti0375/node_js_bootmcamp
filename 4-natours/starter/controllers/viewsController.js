@@ -43,10 +43,14 @@ exports.getTourDetails = catchAsync(async (req, res, next) => {
 exports.getLoginForm = catchAsync(async (req, res, next) => {
   console.log(`login:`);
 
-  //3) Render the template using the tour
   res.status(200).render('login', {
     title: `Natours Login`
   });
-
-  //   next();
 });
+
+exports.getAccount = (req, res) => {
+  console.log('getAccount was called');
+  res.status(200).render('account', {
+    title: `${res.locals.user.name} Account`
+  });
+};
