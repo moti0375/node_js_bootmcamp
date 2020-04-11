@@ -6,7 +6,7 @@ import { logout } from './logout.js';
 
 //Values
 const mapBox = document.getElementById('map');
-const loginForm = document.querySelector('.form');
+const loginForm = document.querySelector('.form_login');
 const logoutButton = document.querySelector('.nav__el--logout');
 
 if (loginForm) {

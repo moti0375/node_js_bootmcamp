@@ -11,4 +11,6 @@ router.get('/overview', authController.isLoggedIn, controller.getOverview);
 router.get('/tour/:slug', authController.isLoggedIn, controller.getTourDetails);
 router.get('/me', authController.checkAuth, controller.getAccount);
 
+router.post('/submit-user-data', authController.checkAuth, controller.updateUserData);
+
 module.exports = router;

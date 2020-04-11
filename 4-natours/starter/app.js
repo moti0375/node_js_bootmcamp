@@ -39,6 +39,7 @@ app.use('/api', limiter);
 
 //Body parser
 app.use(express.json({ limit: '10kb' })); //Middleware modify incoming data to json format, limit to less than 10kb
+app.use(express.urlencoded({ extended: true, limit: '10kb' })); //Middleware modify incoming data to from html FORM
 
 //Cookie parser
 app.use(cookieParser());

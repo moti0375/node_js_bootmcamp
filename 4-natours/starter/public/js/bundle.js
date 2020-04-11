@@ -8830,7 +8830,7 @@ var _logout = require("./logout.js");
 //Used to support older browsers for running js
 //Values
 var mapBox = document.getElementById('map');
-var loginForm = document.querySelector('.form');
+var loginForm = document.querySelector('.form_login');
 var logoutButton = document.querySelector('.nav__el--logout');
 
 if (loginForm) {
