@@ -15,7 +15,7 @@ router.route('/updatePassword').patch(authController.checkAuth, authController.u
 //Protect all routes after this middleware
 router.use(authController.checkAuth); //This will cause all next routes to be for authenticated users
 
-router.route('/updateMe').patch(controller.uploadUserPhoto, controller.updateMe);
+router.route('/updateMe').patch(controller.uploadUserPhoto, controller.resizeUserPhoto, controller.updateMe);
 router.route('/deleteMe').delete(controller.deleteMe);
 router.route('/me').get(controller.getMeMiddleware, controller.getUser);
 
