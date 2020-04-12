@@ -31,6 +31,9 @@ const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 exports.uploadUserPhoto = upload.single('photo');
 
 exports.resizeUserPhoto = (req, res, next) => {
+  console.log('resizeUserPhoto');
+  console.log(req.file);
+
   if (!req.file) {
     return next();
   }
@@ -94,7 +97,7 @@ exports.getMeMiddleware = (req, res, next) => {
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   //1) Create error if user posts password data
-  console.log(`UpdateMe was called ${JSON.stringify(req.body)}, ${JSON.stringify(req.file)}`);
+  console.log(`UpdateMe was called ${JSON.stringify(req.body)}`);
   const password = req.body.password;
   const passwordConfirm = req.body.passwordConfirm;
   const { user } = req;

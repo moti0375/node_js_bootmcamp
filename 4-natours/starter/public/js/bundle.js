@@ -8949,13 +8949,13 @@ if (updateSettingsSubmit) {
   updateSettingsSubmit.addEventListener('submit', function (e) {
     e.preventDefault();
     console.log('Submit data button clicked');
-    var name = document.getElementById('name').value;
-    var email = document.getElementById('email').value;
-    console.log("Submit button clicked: name: ".concat(name, ", password: ").concat(email));
-    (0, _updateSettings.updateData)({
-      name: name,
-      email: email
-    }, 'details');
+    var form = new FormData();
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
+    form.append('photo', document.getElementById('photo').files[0]);
+    var photo = document.getElementById('photo').value;
+    console.log("Submit button clicked: name: ".concat(name, ", email: ").concat(email, ", file: ").concat(photo));
+    (0, _updateSettings.updateData)(form, 'details');
   });
 }
 

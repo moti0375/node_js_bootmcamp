@@ -41,16 +41,14 @@ if (updateSettingsSubmit) {
   updateSettingsSubmit.addEventListener('submit', e => {
     e.preventDefault();
     console.log('Submit data button clicked');
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    console.log(`Submit button clicked: name: ${name}, password: ${email}`);
-    updateData(
-      {
-        name: name,
-        email: email
-      },
-      'details'
-    );
+    const form = new FormData();
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
+    form.append('photo', document.getElementById('photo').files[0]);
+
+    const photo = document.getElementById('photo').value;
+    console.log(`Submit button clicked: name: ${name}, email: ${email}, file: ${photo}`);
+    updateData(form, 'details');
   });
 }
 
