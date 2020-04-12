@@ -91,6 +91,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
   //2)Update user document
   const bufUser = filterObj(req.body, 'name', 'email');
+  if (req.file) bufUser.photo = req.file.filename;
 
   console.log(`user ID: ${user._id}, ${JSON.stringify(bufUser)}`);
 
