@@ -4,4 +4,6 @@
 /4-natours/package-lock.json
 package-lock.json
 node_modules/*
-4-natours/starter/public/js/bundle.*
+4-natours/starter/public/js/bundle*
+4-natours/starter/public/img/users/*
+4-natours/starter/public/js/bundle.js.map

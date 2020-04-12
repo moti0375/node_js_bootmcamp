@@ -53,7 +53,7 @@ exports.getMeMiddleware = (req, res, next) => {
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   //1) Create error if user posts password data
-  console.log(`UpdateMe was called ${JSON.stringify(req.body)}`);
+  console.log(`UpdateMe was called ${JSON.stringify(req.body)}, ${JSON.stringify(req.file)}`);
   const password = req.body.password;
   const passwordConfirm = req.body.passwordConfirm;
   const { user } = req;
