@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const AppError = require('../utils/appError');
 const User = require('../models/userModel');
-const sendEmail = require('../utils/email');
+const Email = require('../utils/email');
 const catchAsync = require('../utils/catchAsync.js');
 
 const createToken = id => {
@@ -51,6 +51,8 @@ exports.signUp = catchAsync(async (req, res, next) => {
     role: req.body.role
   }); //This is not a good way of creating a user, as it may allow all users to signup as admin, therefore checkout the next line:
 
+  const url = `${req.protocol}://${req.get('host')}/me`;
+  await new Email(newUser, url).sendWelcome();
   createAndSendToken(res, 201, newUser);
 });
 
@@ -219,26 +221,26 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
   console.log(`Reset URL: ${resetUrl}`);
 
-  const mailOptions = {
-    email: user.email,
-    subject: 'Reset password',
-    message: `Click here to reset password: ${resetUrl}`
-  };
+  // const mailOptions = {
+  //   email: user.email,
+  //   subject: 'Reset password',
+  //   message: `Click here to reset password: ${resetUrl}`
+  // };
 
-  try {
-    await sendEmail(mailOptions);
+  // try {
+  //   await sendEmail(mailOptions);
 
-    res.status(201).json({
-      status: 'success',
-      token: 'Reset token sent to your email'
-    });
-  } catch (e) {
-    console.error(e);
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-    await user.save({ validateBeforeSave: false });
-    return next(new AppError('There was an error sending password reset token.. Please try again later', 500));
-  }
+  //   res.status(201).json({
+  //     status: 'success',
+  //     token: 'Reset token sent to your email'
+  //   });
+  // } catch (e) {
+  //   console.error(e);
+  //   user.passwordResetToken = undefined;
+  //   user.passwordResetExpires = undefined;
+  //   await user.save({ validateBeforeSave: false });
+  //   return next(new AppError('There was an error sending password reset token.. Please try again later', 500));
+  // }
 });
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
