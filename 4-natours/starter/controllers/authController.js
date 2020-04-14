@@ -51,7 +51,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
     role: req.body.role
   }); //This is not a good way of creating a user, as it may allow all users to signup as admin, therefore checkout the next line:
 
-  const url = `${req.protocol}://${req.get('host')}/me`;
+  const url = `${req.protocol}://${req.get('host')}`;
   await new Email(newUser, url).sendWelcome();
   createAndSendToken(res, 201, newUser);
 });
@@ -227,20 +227,22 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   //   message: `Click here to reset password: ${resetUrl}`
   // };
 
-  // try {
-  //   await sendEmail(mailOptions);
+  try {
+    // await sendEmail(mailOptions);
 
-  //   res.status(201).json({
-  //     status: 'success',
-  //     token: 'Reset token sent to your email'
-  //   });
-  // } catch (e) {
-  //   console.error(e);
-  //   user.passwordResetToken = undefined;
-  //   user.passwordResetExpires = undefined;
-  //   await user.save({ validateBeforeSave: false });
-  //   return next(new AppError('There was an error sending password reset token.. Please try again later', 500));
-  // }
+    await new Email(user, resetUrl).sendResetPassword();
+
+    res.status(200).json({
+      status: 'success',
+      token: 'Reset token sent to your email'
+    });
+  } catch (e) {
+    console.error(e);
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+    return next(new AppError('There was an error sending password reset token.. Please try again later', 500));
+  }
 });
 
 exports.resetPassword = catchAsync(async (req, res, next) => {

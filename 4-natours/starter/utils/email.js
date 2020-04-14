@@ -54,6 +54,6 @@ module.exports = class Email {
   }
 
   async sendResetPassword() {
-    await this.send('resetPassword');
+    await this.send('password', 'Natours Reset Password: valid for next 10 min');
   }
 };
