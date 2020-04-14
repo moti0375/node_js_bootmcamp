@@ -7,12 +7,19 @@ module.exports = class Email {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = `Natours, Moti Bartov <${process.env.EMAIL_FROM}>`;
+    this.from = `${process.env.EMAIL_FROM}`;
   }
 
   createTransport() {
     if (process.env.NODE_ENV === 'production') {
-      return 1;
+      console.log('Create nodemailer for production..');
+      return nodemailer.createTransport({
+        service: 'SendGrid',
+        auth: {
+          user: process.env.SENDGRID_USERNAME,
+          pass: process.env.SENDGRID_PASSWORD
+        }
+      });
     }
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
@@ -44,6 +51,7 @@ module.exports = class Email {
       html: html
       //html..
     };
+    console.log;
     //3. Send the email
     const transport = this.createTransport();
     await transport.sendMail(mailOptions);
